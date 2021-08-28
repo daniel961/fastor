@@ -1,11 +1,10 @@
 import {
   Select as MuiSelect,
   MenuItem,
-  SelectProps as MuiSelectProps,
   InputLabel,
   FormControl,
 } from '@material-ui/core';
-import { Controller, Control } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { useStyles } from './SelectStyle';
 
 export const Select = props => {

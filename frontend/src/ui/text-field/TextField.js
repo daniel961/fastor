@@ -1,5 +1,5 @@
 import { TextField as MuiTextField } from '@material-ui/core';
-import { Controller, Control } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { useTextFieldStyles } from './TextFieldStyle';
 
 export const TextField = ({

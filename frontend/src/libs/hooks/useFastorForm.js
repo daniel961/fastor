@@ -1,8 +1,7 @@
 import { useForm } from 'react-hook-form';
-import { ObjectSchema } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-export const useFastorForm = () => {
+export const useFastorForm = ({ defaultValues, schema }) => {
   return useForm({
     ...defaultValues,
     resolver: schema ? yupResolver(schema) : undefined,

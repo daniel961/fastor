@@ -1,5 +1,5 @@
 import TimePicker from 'react-time-picker';
-import { Controller, Control } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import trashIcon from './trash_icon.svg';
 import styled from 'styled-components/macro';
 

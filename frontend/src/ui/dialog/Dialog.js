@@ -1,7 +1,4 @@
-import {
-  Dialog as MuiDialog,
-  DialogProps as MuiDialogProps,
-} from '@material-ui/core';
+import { Dialog as MuiDialog } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles, IconButton } from '@material-ui/core';
 

@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 
 const instanceConfig = {
-  baseURL: 'http://devapi.fastor.co.il',
+  baseURL: 'http://localhost:5000/',
   headers: {
     'Content-type': 'application/json',
     Accept: 'application/json',

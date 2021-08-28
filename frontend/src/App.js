@@ -1,8 +1,16 @@
-// import { lazy } from 'react';
+import { lazy } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import ProtectedRoute from './framework/ProtectedRoute';
+import { Navbar } from './components';
+import './App.css';
 
-const routes = [{ path: '/', component: <div></div> }];
+// Routes
+const Login = lazy(() => import('./pages/login/Login'));
+
+const routes = [
+  { path: '/', component: <div></div> },
+  { path: '/login', component: <Login /> },
+];
 
 const protectedRoutes = [
   { path: '/protected-example', component: <div></div> },
@@ -11,6 +19,7 @@ const protectedRoutes = [
 const App = () => {
   return (
     <>
+      <Navbar />
       <Switch>
         {routes.map(route => {
           return (

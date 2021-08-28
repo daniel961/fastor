@@ -43,7 +43,7 @@ const loginUser = async (req, res) => {
         .status(404)
         .send(`לא הצלחנו למצוא את כתובת המייל : ${req.body.email}`);
     }
-  } catch {
+  } catch (err) {
     res.status(400).send('אימייל או  סיסמה לא תקינים');
   }
 };

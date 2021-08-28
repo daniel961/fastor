@@ -1,4 +1,4 @@
-import { Controller, Control } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { Checkbox as MuiCheckbox, FormControlLabel } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { ReactComponent as CheckboxCircle } from './icons/checkbox_circle.svg';

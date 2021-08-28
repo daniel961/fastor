@@ -1,5 +1,5 @@
 import { KeyboardDatePicker as MuiDatePicker } from '@material-ui/pickers';
-import { Controller, Control } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
 export const DatePicker = ({
   name,

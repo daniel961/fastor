@@ -4,12 +4,6 @@ export default createTheme({
   direction: 'rtl',
   typography: {
     htmlFontSize: 10,
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      'Heebo',
-      'sans-serif',
-    ].join(','),
   },
   palette: {
     primary: {
