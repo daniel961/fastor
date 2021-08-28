@@ -10,7 +10,7 @@ passwordSchema
   .is()
   .max(20)
   .has()
-  .digits(2)
+  .digits(1)
   .has()
   .symbols()
   .has()
@@ -39,9 +39,7 @@ const loginUser = async (req, res) => {
         throw new Error();
       }
     } else {
-      res
-        .status(404)
-        .send(`לא הצלחנו למצוא את כתובת המייל : ${req.body.email}`);
+      throw new Error();
     }
   } catch (err) {
     res.status(400).send('אימייל או  סיסמה לא תקינים');
@@ -53,7 +51,7 @@ const registerUser = async (req, res) => {
 
   try {
     if (!passwordSchema.validate(body.password)) {
-      throw 'הסיסמה חייבת להכיל לפחות 6 תווים וסימן מיוחד אחד לפחות (לדוגמה סימן קריאה, סולמית וכו׳)';
+      throw 'הסיסמה חייבת להכיל לפחות 6 תווים, ספרה אחת וסימן מיוחד אחד (לדוגמה סימן קריאה  סולמית וכו׳)';
     }
 
     const hashedPassword = await bcrypt.hash(body.password, 8);
@@ -65,12 +63,19 @@ const registerUser = async (req, res) => {
     });
 
     if (newUser) {
-      res.status(200).send('נוצר בהצלחה');
+      const token = jwt.sign(
+        { email: req.body.email },
+        process.env.TOKEN_SECRET,
+        { expiresIn: '365d' },
+      );
+
+      res.status(200).send({ token });
     }
   } catch (err) {
     if (err.code === 11000) {
-      res.status(400).send('שם משתמש או סיסמה לא נכונים');
+      return res.status(400).send('מייל קיים במערכת. נא לנסות מייל אחר');
     }
+
     res.status(400).send(err);
   }
 };

@@ -1,64 +1,65 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TextField } from '../../ui';
 import { ContinueButton } from '../../components/styled';
 import { Grid, Typography } from '@material-ui/core';
 import { useFastorForm } from '../../libs/hooks';
-import { FlowWrapperStyle } from './RegisterStyle';
 import { registerFormSchema } from './registerSchemas';
 import { useHistory } from 'react-router-dom';
-// import { login } from "../../functions";
 import { ErrorTextStyle } from '../login/LoginStyle';
 import http from '../../axios';
-import moment from 'moment';
+import Cookies from 'universal-cookie';
 
 export const Register = () => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useFastorForm(registerFormSchema);
+  } = useFastorForm({ schema: registerFormSchema });
   const [errorText, setErrorText] = useState('');
   const history = useHistory();
+  const cookies = new Cookies();
+
+  useEffect(() => {
+    if (cookies.get('token')) {
+      history.push('/');
+    }
+  });
 
   const onSubmit = async formValues => {
-    const { fullName, email, personalPhoneNumber, password } = formValues;
+    const { fullName, email, phone, password } = formValues;
 
     try {
-      const response = await http.post('/user/signup', {
+      const response = await http.post('/users/register', {
         fullname: fullName,
         email,
-        personalPhoneNumber,
+        phone,
         password,
       });
 
-      if (response.data.isSuccess) {
-        const loginResponse = await http.post('/user/signin', {
-          email,
-          password,
-        });
-
-        const sevenDaysFromNow = moment().add(7, 'd').format('YYYY-MM-DD');
+      if (response.data) {
         const dateToRemoveCookie = new Date().setTime(
           new Date().getTime() + 7 * 24 * 60 * 60 * 1000,
         );
 
-        // login(loginResponse.data.res, sevenDaysFromNow, dateToRemoveCookie);
+        cookies.set('token', response.data.token, {
+          path: '/',
+          expires: new Date(dateToRemoveCookie),
+        });
 
         setErrorText('');
+        history.push('/calendar');
 
-        return history.push('/business-register');
+        return history.push('/calendar');
       } else {
         setErrorText('משהו השתבש. שננסה שוב?');
       }
-
-      throw new Error();
     } catch (e) {
-      setErrorText('המייל שבחרת כבר קיים במערכת'); // TODO : Change the error message according to server error response
+      setErrorText(e.response.data);
     }
   };
 
   return (
-    <FlowWrapperStyle size='small' onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <ErrorTextStyle text={errorText}>
         <Grid
           container
@@ -100,10 +101,10 @@ export const Register = () => {
           <Grid item>
             <TextField
               label='נייד'
-              name='personalPhoneNumber'
+              name='phone'
               type='tel'
               control={control}
-              helperText={errors?.personalPhoneNumber?.message}
+              helperText={errors?.phone?.message}
             />
           </Grid>
 
@@ -132,7 +133,7 @@ export const Register = () => {
           </Grid>
         </Grid>
       </ErrorTextStyle>
-    </FlowWrapperStyle>
+    </form>
   );
 };
 

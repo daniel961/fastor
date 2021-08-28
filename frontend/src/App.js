@@ -6,15 +6,16 @@ import './App.css';
 
 // Routes
 const Login = lazy(() => import('./pages/login/Login'));
+const Register = lazy(() => import('./pages/register/Register'));
+const Calendar = lazy(() => import('./pages/calendar/Calendar'));
 
 const routes = [
   { path: '/', component: <div></div> },
   { path: '/login', component: <Login /> },
+  { path: '/register', component: <Register /> },
 ];
 
-const protectedRoutes = [
-  { path: '/protected-example', component: <div></div> },
-];
+const protectedRoutes = [{ path: '/calendar', component: <Calendar /> }];
 
 const App = () => {
   return (
