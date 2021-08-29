@@ -1,7 +1,4 @@
 const mongoose = require('mongoose');
-// const validator = require('validator');
-// const yup = require('yup');
-// const moment = require('moment');
 
 const businessSchema = new mongoose.Schema({
   name: {

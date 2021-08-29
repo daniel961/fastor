@@ -44,6 +44,7 @@ export const Login = () => {
         history.push('/calendar');
       }
     } catch (err) {
+      console.log(err);
       setErrorText(err.response.data);
     }
   };

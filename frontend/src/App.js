@@ -8,6 +8,9 @@ import './App.css';
 const Login = lazy(() => import('./pages/login/Login'));
 const Register = lazy(() => import('./pages/register/Register'));
 const Calendar = lazy(() => import('./pages/calendar/Calendar'));
+const BusinessInformation = lazy(() =>
+  import('./pages/business-information/BusinessInformation'),
+);
 
 const routes = [
   { path: '/', component: <div></div> },
@@ -15,7 +18,10 @@ const routes = [
   { path: '/register', component: <Register /> },
 ];
 
-const protectedRoutes = [{ path: '/calendar', component: <Calendar /> }];
+const protectedRoutes = [
+  { path: '/calendar', component: <Calendar /> },
+  { path: '/business-information', component: <BusinessInformation /> },
+];
 
 const App = () => {
   return (

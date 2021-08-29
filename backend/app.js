@@ -3,6 +3,8 @@ const cors = require('cors');
 const path = require('path');
 const userRouter = require('./routes/user');
 const businessRouter = require('./routes/business');
+const workTimeRouter = require('./routes/workTime');
+
 require('./db/dbcon');
 
 const PORT = process.env.PORT || 5000;
@@ -14,6 +16,7 @@ app.use(express.urlencoded({ limit: '25mb', extended: true }));
 
 app.use('/users', userRouter);
 app.use('/business', businessRouter);
+app.use('/business', workTimeRouter);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
