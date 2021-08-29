@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const authenticateToken = require('../middlewares/authentication');
+const auth = require('../middlewares/auth');
 const { getBusinessInformation } = require('../controllers/business');
 
-router.get('/information', authenticateToken, getBusinessInformation);
+router.get('/information', auth, getBusinessInformation);
 
 module.exports = router;

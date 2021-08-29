@@ -1,5 +1,3 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const passwordValidator = require('password-validator');
 
@@ -19,25 +17,14 @@ passwordSchema
 
 const loginUser = async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const user = await User.findByCredentials(
+      req.body.email,
+      req.body.password,
+    );
 
     if (user) {
-      const validPassword = await bcrypt.compare(
-        req.body.password,
-        user.password,
-      );
-
-      if (validPassword) {
-        const token = jwt.sign(
-          { email: req.body.email },
-          process.env.TOKEN_SECRET,
-          { expiresIn: '365d' },
-        );
-
-        res.status(200).send({ token });
-      } else {
-        throw new Error();
-      }
+      const token = await user.generateAuthToken();
+      res.status(200).send({ token });
     } else {
       throw new Error();
     }
@@ -54,20 +41,10 @@ const registerUser = async (req, res) => {
       throw 'הסיסמה חייבת להכיל לפחות 6 תווים, ספרה אחת וסימן מיוחד אחד (לדוגמה סימן קריאה  סולמית וכו׳)';
     }
 
-    const hashedPassword = await bcrypt.hash(body.password, 8);
-
-    const newUser = await User.create({
-      email: body.email,
-      password: hashedPassword,
-      phone: body.phone,
-    });
-
-    if (newUser) {
-      const token = jwt.sign(
-        { email: req.body.email },
-        process.env.TOKEN_SECRET,
-        { expiresIn: '365d' },
-      );
+    const user = new User(body);
+    await user.save();
+    if (user) {
+      const token = await user.generateAuthToken();
 
       res.status(200).send({ token });
     }
@@ -80,7 +57,22 @@ const registerUser = async (req, res) => {
   }
 };
 
+const logoutUser = async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter(token => {
+      return token.token !== req.token;
+    });
+
+    await req.user.save();
+
+    res.send();
+  } catch (e) {
+    res.status(500).send();
+  }
+};
+
 module.exports = {
   loginUser,
   registerUser,
+  logoutUser,
 };

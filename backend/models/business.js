@@ -3,8 +3,8 @@ const validator = require('validator');
 const yup = require('yup');
 const moment = require('moment');
 
-const Business = new mongoose.Schema({});
+const businessSchema = new mongoose.Schema({});
 
-const model = mongoose.model('Business', Business);
+const Business = mongoose.model('Business', businessSchema);
 
-module.exports = model;
+module.exports = Business;

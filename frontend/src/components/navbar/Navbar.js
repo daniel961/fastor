@@ -3,6 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { Button } from '../../ui';
 import { Logo, NavbarContainer, GridStyle } from './NavbarStyle';
 import Cookies from 'universal-cookie';
+import http from '../../axios';
 
 export const Navbar = () => {
   const history = useHistory();
@@ -14,10 +15,19 @@ export const Navbar = () => {
     history.push('/login');
   };
 
-  const handleLogoutClick = () => {
-    cookies.remove('token');
-    history.push('/');
-    window.location.reload(); // clear redux states
+  const handleLogoutClick = async () => {
+    try {
+      const response = await http.post('/users/logout');
+
+      if (response.status === 200) {
+        cookies.remove('token');
+        history.push('/');
+      } else {
+        throw new Error();
+      }
+    } catch (err) {
+      console.log(err); // TODO : Turn on some screen that displays nice error for that
+    }
   };
 
   return (
