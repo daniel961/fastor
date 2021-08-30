@@ -24,7 +24,10 @@ const loginUser = async (req, res) => {
 
     if (user) {
       const token = await user.generateAuthToken();
-      res.status(200).send({ token });
+      const completeRegisteration = await user.checkForRegisterCompletion(
+        user._id,
+      );
+      res.status(200).send({ token, completeRegisteration });
     } else {
       throw new Error();
     }

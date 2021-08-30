@@ -41,7 +41,12 @@ export const Login = () => {
         });
 
         setErrorText('');
-        history.push('/calendar');
+
+        if (data.completeRegisteration) {
+          history.push('/calendar');
+        } else {
+          history.push('/business-information');
+        }
       }
     } catch (err) {
       console.log(err);

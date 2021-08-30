@@ -4,6 +4,9 @@ const yup = require('yup');
 const moment = require('moment');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const Business = require('./business');
+const Service = require('./service');
+const WorkTime = require('./workTime');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -108,6 +111,18 @@ userSchema.statics.findByCredentials = async (email, password) => {
   }
 
   return user;
+};
+
+userSchema.methods.checkForRegisterCompletion = async userId => {
+  const business = await Business.findOne({ userId });
+  const services = await Service.findOne({ userId });
+  const workingHours = await WorkTime.findOne({ userId });
+
+  if (business && services && workingHours) {
+    return true;
+  }
+
+  return false;
 };
 
 // Hash the plain text password before saving
