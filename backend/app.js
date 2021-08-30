@@ -4,6 +4,7 @@ const path = require('path');
 const userRouter = require('./routes/user');
 const businessRouter = require('./routes/business');
 const workTimeRouter = require('./routes/workTime');
+const serviceRouter = require('./routes/service');
 
 require('./db/dbcon');
 
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ limit: '25mb', extended: true }));
 app.use('/users', userRouter);
 app.use('/business', businessRouter);
 app.use('/business', workTimeRouter);
+app.use('/service', serviceRouter);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
