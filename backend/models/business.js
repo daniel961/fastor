@@ -12,6 +12,7 @@ const businessSchema = new mongoose.Schema({
     trim: true,
   },
   notificationHourBefore: {
+    // TODO: Extract to new model
     type: Boolean,
     default: false,
   },

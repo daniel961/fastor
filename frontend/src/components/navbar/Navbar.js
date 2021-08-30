@@ -4,6 +4,7 @@ import { Button } from '../../ui';
 import { Logo, NavbarContainer, GridStyle } from './NavbarStyle';
 import Cookies from 'universal-cookie';
 import http from '../../axios';
+import logo from '../../libs/icons/logo.svg';
 
 export const Navbar = () => {
   const history = useHistory();
@@ -39,7 +40,7 @@ export const Navbar = () => {
           alignItems='center'
         >
           <Grid item>
-            <Logo src='' alt='לוגו' onClick={() => history.push('/')} />
+            <Logo src={logo} alt='לוגו' onClick={() => history.push('/')} />
           </Grid>
 
           <GridStyle item>
