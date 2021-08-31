@@ -1,24 +1,24 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core';
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles(theme => ({
   root: {
-    minWidth: "28rem",
-    "&:focus": {
-      background: "none",
+    // minWidth: "28rem",
+    '&:focus': {
+      background: 'none',
     },
   },
   menu: {
-    "& .MuiList-root": {
-      "& .MuiListItem-root.Mui-focusVisible": {
-        background: "rgba(38, 95, 177, 0.1)",
+    '& .MuiList-root': {
+      '& .MuiListItem-root.Mui-focusVisible': {
+        background: 'rgba(38, 95, 177, 0.1)',
       },
-      "& .Mui-selected": {
+      '& .Mui-selected': {
         background: theme.palette.primary.main,
-        color: "white",
+        color: 'white',
       },
-      "& .MuiListItem-button": {
-        "&:hover": {
-          background: "rgba(38, 95, 177, 0.1)",
+      '& .MuiListItem-button': {
+        '&:hover': {
+          background: 'rgba(38, 95, 177, 0.1)',
         },
       },
     },

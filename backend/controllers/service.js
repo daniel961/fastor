@@ -1,17 +1,31 @@
 const Service = require('../models/service');
-const User = require('../models/user');
 
-const addService = async (req, res) => {
+const addServices = async (req, res) => {
   const userId = req.user._id;
+  const servicesBody = req.body.services;
 
   try {
-    const service = new Service({
-      ...req.body,
-      userId,
-    });
+    const services = await Service.findOne({ userId });
 
-    await service.save();
-    res.send();
+    if (!services) {
+      const services = new Service({
+        services: servicesBody,
+        userId,
+      });
+
+      await services.save();
+      res.send();
+    } else {
+      await Service.updateOne(
+        { userId },
+        {
+          services: servicesBody,
+          userId,
+        },
+      );
+
+      res.status(200).send();
+    }
   } catch (err) {
     res.status(400).send();
   }
@@ -27,6 +41,6 @@ const getServices = async (req, res) => {
 };
 
 module.exports = {
-  addService,
+  addServices,
   getServices,
 };

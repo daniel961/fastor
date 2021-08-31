@@ -27,7 +27,7 @@ export const Navbar = () => {
         throw new Error();
       }
     } catch (err) {
-      console.log(err); // TODO : Turn on some screen that displays nice error for that
+      console.log(err); // TODO: Turn on some screen that displays nice error for that
     }
   };
 

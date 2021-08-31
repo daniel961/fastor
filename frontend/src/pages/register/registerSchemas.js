@@ -1,4 +1,3 @@
-import { phoneNumberPattern } from '../../libs/utils/regex-patterns';
 import * as yup from 'yup';
 
 export const registerFormSchema = yup.object().shape({
@@ -17,8 +16,4 @@ export const registerFormSchema = yup.object().shape({
     .string()
     .required('שדה חובה')
     .oneOf([yup.ref('password'), null], 'הסיסמה לא תואמת לשדה הקודם'),
-  phone: yup
-    .string()
-    .required('שדה חובה')
-    .matches(phoneNumberPattern, 'טלפון לא חוקי'),
 });

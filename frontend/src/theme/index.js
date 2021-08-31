@@ -4,6 +4,7 @@ export default createTheme({
   direction: 'rtl',
   typography: {
     htmlFontSize: 10,
+    fontFamily: 'Heebo',
   },
   palette: {
     primary: {

@@ -2,7 +2,6 @@ import { lazy } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import ProtectedRoute from './framework/ProtectedRoute';
 import { Navbar } from './components';
-import './App.css';
 
 // Routes
 const Login = lazy(() => import('./pages/login/Login'));

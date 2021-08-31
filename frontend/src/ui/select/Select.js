@@ -3,6 +3,7 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  FormHelperText,
 } from '@material-ui/core';
 import { Controller } from 'react-hook-form';
 import { useStyles } from './SelectStyle';
@@ -16,7 +17,7 @@ export const Select = props => {
       control={props.control}
       defaultValue=''
       render={({ field }) => (
-        <FormControl className={props.className}>
+        <FormControl className={props.className} error={!!props.helperText}>
           {props.label && <InputLabel>{props.label}</InputLabel>}
           <MuiSelect
             classes={{ root: classes.root }}
@@ -42,6 +43,7 @@ export const Select = props => {
               );
             })}
           </MuiSelect>
+          <FormHelperText>{props.helperText}</FormHelperText>
         </FormControl>
       )}
     ></Controller>

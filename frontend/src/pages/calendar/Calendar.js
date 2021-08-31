@@ -10,8 +10,12 @@ export const Calendar = () => {
   const [blockAppointmentsDialogOpen, setBlockAppointmentsDialogOpen] =
     useState(false);
   const { control } = useFastorForm();
-
   const classes = useDatepickerStyles();
+
+  /**
+   * TODO: Check if user have services & workingTimes & business information set up before showing him this calendar,
+   * else - redirect him to business-information route
+   */
 
   const openBlockAppointmentsDialog = () => {
     setBlockAppointmentsDialogOpen(true);

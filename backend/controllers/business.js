@@ -14,15 +14,35 @@ const getBusinessInformation = async (req, res) => {
 
 const addBusinessInformation = async (req, res) => {
   const userId = req.user._id;
-  const { name, address } = req.body;
+  const { name, address, phone } = req.body;
 
   try {
-    const business = new Business({ userId, name, address });
-    await business.save();
-    res.send('העסק נוסף בהצלחה');
+    const business = await Business.findOne({ userId });
+
+    if (!business) {
+      const newBusiness = new Business({
+        name,
+        address,
+        phone,
+        userId,
+      });
+
+      await newBusiness.save();
+    } else {
+      await Business.updateOne(
+        { userId },
+        {
+          name,
+          address,
+          phone,
+          userId,
+        },
+      );
+
+      res.status(200).send();
+    }
   } catch (err) {
-    console.log(err);
-    res.status(400).send('אירעה שגיאה בהוספת העסק');
+    res.status(400).send('אחד מהנתונים מהנתונים חסרים');
   }
 };
 

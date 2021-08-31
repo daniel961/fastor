@@ -4,12 +4,13 @@ const GlobalStyle = createGlobalStyle`
   * {
     padding: 0;
     margin: 0;
-    font-family: "Heebo";
+    font-family: 'Heebo';
   }
 
   html, body, #root {
     height: 100%;
     overflow-x: hidden;
+    direction: rtl;
   }
 
   html {

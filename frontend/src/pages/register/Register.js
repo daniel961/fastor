@@ -26,13 +26,12 @@ export const Register = () => {
   });
 
   const onSubmit = async formValues => {
-    const { fullName, email, phone, password } = formValues;
+    const { fullName, email, password } = formValues;
 
     try {
       const response = await http.post('/users/register', {
         fullname: fullName,
         email,
-        phone,
         password,
       });
 
@@ -49,7 +48,11 @@ export const Register = () => {
         setErrorText('');
         history.push('/calendar');
 
-        return history.push('/calendar');
+        if (response.data.completeRegisteration) {
+          history.push('/calendar');
+        } else {
+          history.push('/business-information');
+        }
       } else {
         setErrorText('משהו השתבש. שננסה שוב?');
       }
@@ -95,16 +98,6 @@ export const Register = () => {
               type='email'
               control={control}
               helperText={errors?.email?.message}
-            />
-          </Grid>
-
-          <Grid item>
-            <TextField
-              label='נייד'
-              name='phone'
-              type='tel'
-              control={control}
-              helperText={errors?.phone?.message}
             />
           </Grid>
 

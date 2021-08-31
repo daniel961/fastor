@@ -27,25 +27,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  phone: {
-    type: String,
-    required: true,
-    trim: true,
-    validate(value) {
-      const phoneSchema = yup
-        .string()
-        .matches(
-          /^(?:(?:(\+?972|\(\+?972\)|\+?\(972\))(?:\s|\.|-)?([1-9]\d?))|(0[23489]{1})|(0[57]{1}[0-9]))(?:\s|\.|-)?([^0\D]{1}\d{2}(?:\s|\.|-)?\d{4})$/,
-          'Password must contain at least 8 characters, one uppercase, one number and one special case character',
-        );
-
-      phoneSchema.isValid(value).then(valid => {
-        if (!valid) {
-          throw new Error('מספר הטלפון לא  תקין');
-        }
-      });
-    },
-  },
   emailConfirmed: {
     type: Boolean,
     default: false,
