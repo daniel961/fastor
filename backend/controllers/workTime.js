@@ -5,14 +5,29 @@ const insertWorkTimes = async (req, res) => {
   const body = req.body;
 
   try {
-    const workTime = new WorkTime({
-      userId,
-      activityTimes: body.activityTimes,
-    });
+    const existingWorkTime = await WorkTime.findOne({ userId });
 
-    await workTime.save();
-    res.send('עודכן בהצלחה');
+    if (!existingWorkTime) {
+      const workTime = new WorkTime({
+        userId,
+        activityTimes: body.activityTimes,
+      });
+
+      await workTime.save();
+      res.send('נוצר בהצלחה');
+    } else {
+      await WorkTime.updateOne(
+        { userId },
+        {
+          userId,
+          activityTimes: body.activityTimes,
+        },
+      );
+
+      res.status(200).send();
+    }
   } catch (err) {
+    console.log(err);
     res.status(400).send('משהו השתבש. נסה שוב.');
   }
 };

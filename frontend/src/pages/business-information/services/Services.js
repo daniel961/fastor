@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Grid } from '@material-ui/core';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { TextField, ErrorText, Select, Button } from '../../../ui';
-import { hrs, mins } from './hourAndMinutes';
+import { hrs, mins } from '../hourAndMinutes';
 
 export const Services = ({ services, setServices }) => {
   const {
@@ -10,6 +10,7 @@ export const Services = ({ services, setServices }) => {
     formState: { errors },
     trigger,
     setValue,
+    setError,
   } = useFormContext();
   const [errorText] = useState('');
   const serviceFormValues = useWatch({
@@ -21,6 +22,22 @@ export const Services = ({ services, setServices }) => {
     const validationPassed = await trigger();
     const { serviceName, price, hourDuration, minDuration } = serviceFormValues;
     const duration = `${hourDuration}:${minDuration}`;
+
+    if (
+      duration === '00:00' ||
+      hourDuration === undefined ||
+      minDuration === undefined
+    ) {
+      setError('hourDuration', {
+        type: 'manual',
+        message: 'לא תקין',
+      });
+
+      setError('minDuration', {
+        type: 'manual',
+        message: 'לא תקין',
+      });
+    }
 
     if (validationPassed) {
       setServices([
@@ -69,6 +86,7 @@ export const Services = ({ services, setServices }) => {
               label='דקות'
               control={control}
               options={mins}
+              defaultValue='00'
               name='minDuration'
               helperText={errors?.minDuration?.message}
             />
@@ -83,6 +101,7 @@ export const Services = ({ services, setServices }) => {
               label='שעות'
               control={control}
               options={hrs}
+              defaultValue='00'
               name='hourDuration'
               helperText={errors?.hourDuration?.message}
             />

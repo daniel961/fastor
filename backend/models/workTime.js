@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const workTimeSchema = new mongoose.Schema({
   activityTimes: [
-    // TODO: Validate specific days & only one workingHours object per group
+    // TODO: Validate specific days (sunday, monday etc.) & only one workingHours object per group
     // In addition, check if data is not empty
     {
       days: [

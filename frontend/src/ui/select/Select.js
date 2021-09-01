@@ -15,7 +15,7 @@ export const Select = props => {
     <Controller
       name={props.name}
       control={props.control}
-      defaultValue=''
+      defaultValue={props.defaultValue || ''}
       render={({ field }) => (
         <FormControl className={props.className} error={!!props.helperText}>
           {props.label && <InputLabel>{props.label}</InputLabel>}

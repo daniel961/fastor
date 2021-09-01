@@ -13,10 +13,13 @@ import GeneralInformation from './general-information/GeneralInformation';
 import WorkingHours from './working-hours/WorkingHours';
 import Services from './services/Services';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useHistory } from 'react-router-dom';
 import {
   businessInformationFormSchema,
   servicesSchema,
+  workingHoursFormSchema,
 } from './businessInformationSchemas';
+import { englishWorkingDays } from '../../libs/utils/globals';
 import http from '../../axios';
 
 const resolver = activeStep => {
@@ -25,6 +28,8 @@ const resolver = activeStep => {
       return yupResolver(businessInformationFormSchema);
     case 1:
       return yupResolver(servicesSchema);
+    case 2:
+      return yupResolver(workingHoursFormSchema);
     default:
       break;
   }
@@ -32,13 +37,14 @@ const resolver = activeStep => {
 
 export const BusinessInformation = () => {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(2);
   const [services, setServices] = useState([]);
+  const history = useHistory();
   const methods = useForm({
     resolver: resolver(activeStep),
   });
 
-  const onSubmit = async ({ name, address, phone }) => {
+  const onSubmit = async ({ name, address, phone, ...rest }) => {
     switch (activeStep) {
       case 0:
         try {
@@ -48,7 +54,7 @@ export const BusinessInformation = () => {
             phone,
           });
 
-          // TODO: Add loader & display errors nicely
+          // TODO: Add loader & display nice error
           if (response.status === 200) {
             handleNext();
           }
@@ -58,6 +64,7 @@ export const BusinessInformation = () => {
 
         break;
       case 2:
+        handleWorkingHoursSubmit(rest);
         break;
       default:
     }
@@ -91,6 +98,44 @@ export const BusinessInformation = () => {
           handleNext();
         }
       } catch (err) {}
+    }
+  };
+
+  const handleWorkingHoursSubmit = async formValues => {
+    const selectedWorkDays = [];
+
+    Object.entries(formValues).forEach(([key, value]) => {
+      const hoursStart = formValues[`${key}StartHour`];
+      const minutesStart = formValues[`${key}StartMinute`];
+      const hoursEnd = formValues[`${key}EndHour`];
+      const minutesEnd = formValues[`${key}EndMinute`];
+      const from = `${hoursStart}:${minutesStart}`;
+      const to = `${hoursEnd}:${minutesEnd}`;
+
+      if (value && englishWorkingDays.includes(key)) {
+        selectedWorkDays.push({
+          days: [key],
+          workingHours: {
+            from,
+            to,
+          },
+        });
+      }
+    });
+
+    const data = {
+      activityTimes: selectedWorkDays,
+    };
+
+    try {
+      const res = await http.post('/business/insert-work-times', data);
+
+      // TODO: Add loader & display nice error
+      if (res.status === 200) {
+        history.push('/calendar');
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
