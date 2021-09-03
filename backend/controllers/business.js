@@ -2,11 +2,11 @@ const Business = require('../models/business');
 const User = require('../models/user');
 
 const getBusinessInformation = async (req, res) => {
-  const _id = req.user._id;
+  const userId = req.body.userId;
 
   try {
-    const user = await User.findById({ _id });
-    res.send({ user });
+    const businessInformation = await Business.findOne({ userId });
+    res.send({ businessInformation });
   } catch (err) {
     res.status(404).send('לא נמצאו נתונים עבור העסק המבוקש');
   }

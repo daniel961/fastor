@@ -5,6 +5,7 @@ const userRouter = require('./routes/user');
 const businessRouter = require('./routes/business');
 const workTimeRouter = require('./routes/workTime');
 const serviceRouter = require('./routes/service');
+const otpRouter = require('./routes/otp');
 
 require('./db/dbcon');
 
@@ -19,6 +20,7 @@ app.use('/users', userRouter);
 app.use('/business', businessRouter);
 app.use('/business', workTimeRouter);
 app.use('/service', serviceRouter);
+app.use('/otp', otpRouter);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));

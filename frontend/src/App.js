@@ -10,11 +10,27 @@ const Calendar = lazy(() => import('./pages/calendar/Calendar'));
 const BusinessInformation = lazy(() =>
   import('./pages/business-information/BusinessInformation'),
 );
+const Appointment = lazy(() => import('./pages/appointment/Appointment'));
+const CustomerAuthentication = lazy(() =>
+  import('./pages/appointment/customer-authentication/CustomerAuthentication'),
+);
+const NewAppointment = lazy(() =>
+  import('./pages/appointment/new-appointment/NewAppointment'),
+);
 
 const routes = [
   { path: '/', component: <div></div> },
   { path: '/login', component: <Login /> },
   { path: '/register', component: <Register /> },
+  { path: '/appointment/:userId', component: <Appointment /> },
+  {
+    path: '/appointment/authenticate/:userId',
+    component: <CustomerAuthentication />,
+  },
+  {
+    path: '/appointment/insert/:userId',
+    component: <NewAppointment />,
+  },
 ];
 
 const protectedRoutes = [

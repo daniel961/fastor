@@ -5,7 +5,7 @@ const {
   addBusinessInformation,
 } = require('../controllers/business');
 
-router.get('/information', auth, getBusinessInformation);
+router.post('/information', auth, getBusinessInformation);
 router.post('/add-business', auth, addBusinessInformation);
 
 module.exports = router;
