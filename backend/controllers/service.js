@@ -40,7 +40,19 @@ const getServices = async (req, res) => {
   } catch (err) {}
 };
 
+const getServicesExternal = async (req, res) => {
+  const userId = req.body.userId;
+
+  try {
+    const services = await Service.find({ userId });
+    res.send(services);
+  } catch (err) {
+    res.status(400).send();
+  }
+};
+
 module.exports = {
   addServices,
   getServices,
+  getServicesExternal,
 };
