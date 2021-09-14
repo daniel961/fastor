@@ -25,7 +25,7 @@ export const Appointment = () => {
     <>
       {businessInformation.name}
       <GradientButton
-        onClick={() => history.push(`/appointment/insert/${userId}`)}
+        onClick={() => history.push(`/appointment/authenticate/${userId}`)}
       >
         זימון תור חדש
       </GradientButton>

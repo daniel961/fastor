@@ -10,11 +10,6 @@ export const customerDetailsSchema = yup.object().shape({
 });
 
 export const customerAuthenticationSchema = yup.object().shape({
-  customerName: yup
-    .string()
-    .min(2, 'שם לא חוקי')
-    .max(20, 'מקסימום 20 תווים')
-    .required('שדה חובה'),
   customerPhone: yup
     .string()
     .required('שדה חובה')

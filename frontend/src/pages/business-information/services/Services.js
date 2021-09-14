@@ -80,7 +80,6 @@ export const Services = ({ services, setServices }) => {
 
         <Grid item container alignItems='center'>
           {/* <InputLabel id='demo-simple-select-label'>משך התור</InputLabel> */}
-
           <Grid item>
             <Select
               label='דקות'
@@ -91,11 +90,9 @@ export const Services = ({ services, setServices }) => {
               helperText={errors?.minDuration?.message}
             />
           </Grid>
-
           <Grid item>
             <span>:</span>
           </Grid>
-
           <Grid item>
             <Select
               label='שעות'

@@ -37,7 +37,7 @@ const resolver = activeStep => {
 
 export const BusinessInformation = () => {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(0);
   const [services, setServices] = useState([]);
   const history = useHistory();
   const methods = useForm({

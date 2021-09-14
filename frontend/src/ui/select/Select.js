@@ -16,36 +16,43 @@ export const Select = props => {
       name={props.name}
       control={props.control}
       defaultValue={props.defaultValue || ''}
-      render={({ field }) => (
-        <FormControl className={props.className} error={!!props.helperText}>
-          {props.label && <InputLabel>{props.label}</InputLabel>}
-          <MuiSelect
-            classes={{ root: classes.root }}
-            MenuProps={{
-              className: classes.menu,
-              anchorOrigin: {
-                vertical: 'bottom',
-                horizontal: 'left',
-              },
-              transformOrigin: {
-                vertical: 'top',
-                horizontal: 'left',
-              },
-              getContentAnchorEl: null,
-            }}
-            {...field}
-          >
-            {props.options.map(option => {
-              return (
-                <MenuItem key={option.key} value={option.value}>
-                  {option.label || option.value}
-                </MenuItem>
-              );
-            })}
-          </MuiSelect>
-          <FormHelperText>{props.helperText}</FormHelperText>
-        </FormControl>
-      )}
+      render={({ field }) => {
+        return (
+          <FormControl className={props.className} error={!!props.helperText}>
+            {props.label && <InputLabel>{props.label}</InputLabel>}
+            <MuiSelect
+              classes={{ root: classes.root }}
+              MenuProps={{
+                className: classes.menu,
+                anchorOrigin: {
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                },
+                transformOrigin: {
+                  vertical: 'top',
+                  horizontal: 'left',
+                },
+                getContentAnchorEl: null,
+              }}
+              {...field}
+              onChange={props.onChange || field.onChange}
+              disabled={props.disabled}
+            >
+              {props.options.map(option => {
+                return (
+                  <MenuItem
+                    key={option[props.optionKey] || option.key}
+                    value={option[props.optionValue] || option.value}
+                  >
+                    {option[props.optionValue] || option.label || option.value}
+                  </MenuItem>
+                );
+              })}
+            </MuiSelect>
+            <FormHelperText>{props.helperText}</FormHelperText>
+          </FormControl>
+        );
+      }}
     ></Controller>
   );
 };

@@ -6,7 +6,7 @@ import http from '../../../axios';
 import {
   customerDetailsSchema,
   customerAuthenticationSchema,
-} from './CustomerAuthenticationSchemas';
+} from './customerAuthenticationSchemas';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 export const CustomerAuthentication = () => {
@@ -65,12 +65,6 @@ export const CustomerAuthentication = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       {!showCodeValidationField && (
         <>
-          <TextField
-            control={control}
-            name='customerName'
-            label='מה השם שלך ?'
-            helperText={errors?.customerName?.message}
-          />
           <TextField
             control={control}
             name='customerPhone'

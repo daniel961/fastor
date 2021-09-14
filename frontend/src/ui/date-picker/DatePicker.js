@@ -1,4 +1,4 @@
-import { KeyboardDatePicker as MuiDatePicker } from '@material-ui/pickers';
+import { DatePicker as MuiDatePicker } from '@material-ui/pickers';
 import { Controller } from 'react-hook-form';
 
 export const DatePicker = ({
@@ -9,6 +9,8 @@ export const DatePicker = ({
   helperText,
   variant = 'inline',
   className,
+  disablePast,
+  ...props
 }) => {
   return (
     <Controller
@@ -23,8 +25,10 @@ export const DatePicker = ({
             helperText={helperText}
             animateYearScrolling
             autoOk
+            disablePast={disablePast}
             className={className}
             {...rest}
+            {...props}
           />
         );
       }}
