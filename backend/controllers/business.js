@@ -1,6 +1,17 @@
 const Business = require('../models/business');
 
 const getBusinessInformation = async (req, res) => {
+  const userId = req.user._id;
+
+  try {
+    const businessInformation = await Business.findOne({ userId });
+    res.send({ businessInformation });
+  } catch (err) {
+    res.status(404).send('לא נמצאו נתונים עבור העסק המבוקש');
+  }
+};
+
+const externalGetBusinessInformation = async (req, res) => {
   const userId = req.body.userId;
 
   try {
@@ -47,5 +58,6 @@ const addBusinessInformation = async (req, res) => {
 
 module.exports = {
   getBusinessInformation,
+  externalGetBusinessInformation,
   addBusinessInformation,
 };

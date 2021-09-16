@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   CalendarNavbarContainer,
   MenuButton,
@@ -13,6 +14,7 @@ import logo from '../../../libs/icons/logo.svg';
 import profile from '../../../libs/icons/profile.svg';
 import share from '../../../libs/icons/share.svg';
 import notifications from '../../../libs/icons/notifications.svg';
+import Share from './share/Share';
 
 export const CalendarNavbar = ({
   openNewAppointmentDialog,
@@ -21,6 +23,17 @@ export const CalendarNavbar = ({
   const isSmallScreen = useSmallScreen();
   const history = useHistory();
   const hideActionButtonsSize = useMediaQuery('(max-width: 980px)');
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <CalendarNavbarContainer
@@ -83,7 +96,7 @@ export const CalendarNavbar = ({
         </Grid>
       ) : (
         <IconsContainer item container alignItems='center'>
-          <IconButtonStyle>
+          <IconButtonStyle onClick={handleClick}>
             <img src={share} alt='שיתוף' />
           </IconButtonStyle>
           <IconButtonStyle>
@@ -94,6 +107,8 @@ export const CalendarNavbar = ({
           </IconButtonStyle>
         </IconsContainer>
       )}
+
+      <Share open={open} handleClose={handleClose} anchorEl={anchorEl} />
     </CalendarNavbarContainer>
   );
 };
