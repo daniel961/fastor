@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const momentTZ = require('moment-timezone');
 const userRouter = require('./routes/user');
 const businessRouter = require('./routes/business');
 const workTimeRouter = require('./routes/workTime');
@@ -12,7 +11,6 @@ require('./db/dbcon');
 
 const PORT = process.env.PORT || 5000;
 const app = express();
-momentTZ.tz.setDefault('Asia/Jerusalem');
 
 app.use(cors());
 app.use(express.json({ limit: '25mb' }));

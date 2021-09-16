@@ -1,5 +1,4 @@
 const Business = require('../models/business');
-const User = require('../models/user');
 
 const getBusinessInformation = async (req, res) => {
   const userId = req.body.userId;

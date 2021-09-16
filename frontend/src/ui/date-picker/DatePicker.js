@@ -23,6 +23,7 @@ export const DatePicker = ({
             variant={variant}
             label={label}
             helperText={helperText}
+            error={!!helperText}
             animateYearScrolling
             autoOk
             disablePast={disablePast}

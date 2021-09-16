@@ -22,7 +22,7 @@ export const CustomerAuthentication = () => {
       ? yupResolver(customerDetailsSchema)
       : yupResolver(customerAuthenticationSchema),
   });
-  const { userId } = useParams();
+  const { userId, action } = useParams();
   const history = useHistory();
   const customerPhoneValue = watch('customerPhone');
   const validationCodeValue = watch('validationCode');
@@ -50,7 +50,21 @@ export const CustomerAuthentication = () => {
         });
 
         if (res.status === 200) {
-          return history.push(`/appointment/insert/${userId}`);
+          if (action === 'edit') {
+            return history.push({
+              pathname: `/appointment/edit/${userId}`,
+              state: {
+                customerPhone,
+              },
+            });
+          }
+
+          history.push({
+            pathname: `/appointment/insert/${userId}`,
+            state: {
+              customerPhone,
+            },
+          });
         }
       } catch (err) {
         setError('validationCode', {

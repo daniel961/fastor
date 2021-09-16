@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
+const yup = require('yup');
 
 const appointmentSchema = new mongoose.Schema({
   fullName: {
@@ -13,7 +14,7 @@ const appointmentSchema = new mongoose.Schema({
     trim: true,
   },
   service: {
-    type: String,
+    type: Object,
     required: true,
     trim: true,
   },
@@ -27,6 +28,26 @@ const appointmentSchema = new mongoose.Schema({
       type: String,
       required: true,
       trim: true,
+    },
+  },
+  phone: {
+    type: String,
+    required: true,
+    trim: true,
+    validate(value) {
+      const phoneSchema = yup
+        .string()
+        .matches(
+          /^(?:(?:(\+?972|\(\+?972\)|\+?\(972\))(?:\s|\.|-)?([1-9]\d?))|(0[23489]{1})|(0[57]{1}[0-9]))(?:\s|\.|-)?([^0\D]{1}\d{2}(?:\s|\.|-)?\d{4})$/,
+          '',
+        );
+
+      phoneSchema.isValid(value).then(valid => {
+        if (!valid) {
+          console.log('her');
+          throw new Error('מספר הטלפון לא  תקין');
+        }
+      });
     },
   },
   isBlocked: {

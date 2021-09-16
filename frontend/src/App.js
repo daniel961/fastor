@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import ProtectedRoute from './framework/ProtectedRoute';
 import { Navbar } from './components';
 
@@ -17,6 +17,9 @@ const CustomerAuthentication = lazy(() =>
 const NewAppointment = lazy(() =>
   import('./pages/appointment/new-appointment/NewAppointment'),
 );
+const EditAppointment = lazy(() =>
+  import('./pages/appointment/edit-appointment/EditAppointment'),
+);
 
 const routes = [
   { path: '/', component: <div></div> },
@@ -24,12 +27,16 @@ const routes = [
   { path: '/register', component: <Register /> },
   { path: '/appointment/:userId', component: <Appointment /> },
   {
-    path: '/appointment/authenticate/:userId',
+    path: '/appointment/:action?/authenticate/:userId',
     component: <CustomerAuthentication />,
   },
   {
     path: '/appointment/insert/:userId',
     component: <NewAppointment />,
+  },
+  {
+    path: '/appointment/edit/:userId',
+    component: <EditAppointment />,
   },
 ];
 
@@ -39,9 +46,12 @@ const protectedRoutes = [
 ];
 
 const App = () => {
+  const history = useHistory();
+  const showNavbar = !history?.location?.pathname?.includes('/appointment/');
+
   return (
     <>
-      <Navbar />
+      {showNavbar && <Navbar />}
       <Switch>
         {routes.map(route => {
           return (

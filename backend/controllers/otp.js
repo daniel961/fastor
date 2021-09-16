@@ -52,6 +52,10 @@ const sendOtp = async (req, res) => {
     alphabets: false,
   });
 
+  if (process.env.NODE_ENV === 'development') {
+    console.log(digits);
+  }
+
   try {
     const newOTP = new OTP({
       userId,

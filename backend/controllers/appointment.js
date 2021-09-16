@@ -3,8 +3,18 @@ const WorkTime = require('../models/workTime');
 const Service = require('../models/service');
 const moment = require('moment');
 
+const getAppointments = async (req, res) => {
+  const { userId, phone } = req.body;
+
+  try {
+    const appointments = await Appointment.find({ userId, phone });
+    res.send(appointments);
+  } catch (e) {}
+};
+
 const insertAppointmentFromLandingPage = async (req, res) => {
-  const { fullName, date, serviceId, time, userId } = req.body;
+  const { fullName, date, service, time, phone, userId } = req.body;
+  const { serviceId, serviceName } = service;
   const dayOfWeek = moment(date).format('dddd');
   let workFrom;
   let workTo;
@@ -85,9 +95,13 @@ const insertAppointmentFromLandingPage = async (req, res) => {
       const appointment = await Appointment.create({
         fullName,
         date,
-        service: serviceId,
+        service: {
+          serviceId,
+          serviceName,
+        },
         time: appointmentTime,
         userId,
+        phone,
       });
 
       if (appointment) {
@@ -123,6 +137,7 @@ const getAvailableHoursExternal = async (req, res) => {
   const { userId, date, serviceId } = req.body;
   const dayOfWeek = moment(date).format('dddd');
   const optionalAppointments = [];
+  const workDays = [];
   let workFrom;
   let workTo;
   let currentWorkingHour;
@@ -152,6 +167,7 @@ const getAvailableHoursExternal = async (req, res) => {
     // get working times (from, to)
     workTimes.forEach(workTime => {
       workTime.activityTimes.forEach(activity => {
+        workDays.push(activity.days[0]);
         if (activity.days[0] === dayOfWeek.toLowerCase()) {
           workFrom = activity.workingHours.from;
           currentWorkingHour = activity.workingHours.from;
@@ -163,10 +179,10 @@ const getAvailableHoursExternal = async (req, res) => {
     // TODO: Extract to function
     // set up optional appointments
     while (
-      moment(currentWorkingHour, 'HH:mm').isSameOrBefore(
-        moment(workTo, 'HH:mm').subtract('5', 'minutes'),
-        'hour',
-      )
+      moment(currentWorkingHour, 'HH:mm').format('HH:mm') !==
+      moment(workTo, 'HH:mm')
+        .subtract(serviceDurationInMinutes - 5, 'minutes')
+        .format('HH:mm')
     ) {
       const jumpTo = moment(currentWorkingHour, 'HH:mm')
         .add('5', 'minutes')
@@ -210,9 +226,20 @@ const getAvailableHoursExternal = async (req, res) => {
       return !check;
     });
 
-    res.send(availableHours);
+    res.send({ availableHours, workDays });
   } catch (err) {
     console.log(err);
+  }
+};
+
+const cancelAppointment = async (req, res) => {
+  const { appointmentId } = req.body;
+
+  try {
+    await Appointment.findByIdAndRemove({ _id: appointmentId });
+    res.send();
+  } catch (e) {
+    console.log(e);
   }
 };
 
@@ -220,4 +247,6 @@ module.exports = {
   insertAppointmentFromLandingPage,
   insertAppointmentFromCalendar,
   getAvailableHoursExternal,
+  getAppointments,
+  cancelAppointment,
 };

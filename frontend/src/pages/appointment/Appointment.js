@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { GradientButton } from '../../components/styled';
 import { useParams, useHistory } from 'react-router-dom';
+import { Button } from '../../ui';
 import http from '../../axios';
 
 export const Appointment = () => {
@@ -11,7 +12,9 @@ export const Appointment = () => {
   useEffect(() => {
     const fetchedBusinessInformation = async () => {
       try {
-        const res = await http.post('/business/information', { userId });
+        const res = await http.post('/business/external-business-information', {
+          userId,
+        });
         setBusinessInformation(res.data.businessInformation);
       } catch (err) {
         console.log(err);
@@ -29,6 +32,12 @@ export const Appointment = () => {
       >
         זימון תור חדש
       </GradientButton>
+
+      <Button
+        onClick={() => history.push(`/appointment/edit/authenticate/${userId}`)}
+      >
+        לצפייה / ביטול תור קיים
+      </Button>
     </>
   );
 };

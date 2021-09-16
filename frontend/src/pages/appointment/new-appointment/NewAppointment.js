@@ -1,29 +1,41 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { newAppointmentSchema } from './newAppointmentSchema';
 import { TextField, Button, DatePicker, Select } from '../../../ui';
+import NewAppointmentDialog from './new-appointment-dialog/NewAppointmentDialog';
 import http from '../../../axios';
+import moment from 'moment';
 
 export const NewAppointment = () => {
   const [availableHours, setAvailableHours] = useState([]);
   const [services, setServices] = useState([]);
   const [serviceIdValue, setServiceIdValue] = useState('');
   const [selectedHours, setSelectedHours] = useState({});
+  const [workDays, setWorkDays] = useState([]);
+  const [open, setOpen] = useState(false);
   const { userId } = useParams();
+  const history = useHistory();
   const {
     control,
     handleSubmit,
-    // formState: { errors },
+    formState: { errors },
     watch,
     setValue,
   } = useForm({
     resolver: yupResolver(newAppointmentSchema),
   });
   const dateValue = watch('date');
+  const fullNameValue = watch('fullName');
   const isTimeFieldDisabled =
     !!serviceIdValue && !!dateValue && availableHours.length > 0;
+
+  useEffect(() => {
+    if (!history?.location?.state?.customerPhone) {
+      history.push(`/404`);
+    }
+  }, [history]);
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -43,8 +55,6 @@ export const NewAppointment = () => {
     fetchServices();
   }, [userId]);
 
-  console.log(services);
-
   useEffect(() => {
     const fetchAvailableHours = async () => {
       try {
@@ -52,8 +62,9 @@ export const NewAppointment = () => {
           '/appointment/available-times-external',
           { userId, date: dateValue, serviceId: serviceIdValue },
         );
-        setAvailableHours(response.data);
-        console.log(response.data);
+
+        setAvailableHours(response.data.availableHours);
+        setWorkDays(response.data.workDays);
       } catch (err) {}
     };
 
@@ -62,24 +73,36 @@ export const NewAppointment = () => {
     }
   }, [dateValue, userId, serviceIdValue]);
 
-  const onSubmit = async ({ fullName, date, service, time }) => {
-    console.log(fullName, date, service, selectedHours);
+  const onSubmit = async ({ fullName, date, service }) => {
     try {
       const response = await http.post('/appointment/insert', {
         fullName,
         date,
-        serviceId: serviceIdValue,
+        service: {
+          serviceId: serviceIdValue,
+          serviceName: service,
+        },
         time: selectedHours,
         userId,
+        phone: history.location.state.customerPhone,
       });
 
-      console.log(response);
+      if (response.status === 200) {
+        setOpen(true);
+      }
     } catch (err) {}
   };
 
+  console.log(errors);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <TextField label='שם מלא' name='fullName' control={control} />
+      <TextField
+        label='שם מלא'
+        name='fullName'
+        control={control}
+        helperText={errors?.fullName?.message}
+      />
 
       <Select
         label='איזה תור ?'
@@ -88,6 +111,8 @@ export const NewAppointment = () => {
         options={services}
         optionKey='_id'
         optionValue='serviceName'
+        disabled={!fullNameValue}
+        helperText={errors?.service?.message}
         onChange={(e, newVal) => {
           setServiceIdValue(newVal.key.replace('.$', ''));
           setValue('service', e.target.value);
@@ -100,11 +125,14 @@ export const NewAppointment = () => {
         control={control}
         disablePast
         disableToolbar
+        helperText={errors?.date?.message}
+        defaultValue={null}
+        disabled={!serviceIdValue}
         shouldDisableDate={day => {
+          const dayName = moment(day).locale('en').format('dddd').toLowerCase();
           const year = day.year();
           const currentYear = new Date().getFullYear();
-
-          return year !== currentYear;
+          return year !== currentYear || !workDays.includes(dayName);
         }}
       />
 
@@ -116,6 +144,7 @@ export const NewAppointment = () => {
         options={availableHours}
         optionKey='from'
         optionValue='from'
+        helperText={errors?.time?.message}
         onChange={e => {
           const selectedTime = availableHours.find(({ from, to }) => {
             return from === e.target.value;
@@ -127,6 +156,7 @@ export const NewAppointment = () => {
       />
 
       <Button type='submit'>קביעת תור</Button>
+      <NewAppointmentDialog open={open} />
     </form>
   );
 };

@@ -8,6 +8,16 @@ export const englishWorkingDays = [
   'saturday',
 ];
 
+export const hebrewWorkingDays = [
+  'ראשון',
+  'שני',
+  'שלישי',
+  'רביעי',
+  'חמישי',
+  'שישי',
+  'שבת',
+];
+
 export const workingDays = [
   { english: 'sunday', hebrew: 'א׳' },
   { english: 'monday', hebrew: 'ב׳' },
