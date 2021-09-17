@@ -29,6 +29,16 @@ export default createTheme({
         maxHeight: 'calc(100% - 31px)',
       },
     },
+    MuiPickersDay: {
+      daySelected: {
+        backgroundColor: 'none',
+        color: '#265FB1',
+        border: '1px solid #265FB1',
+        '&:hover': {
+          backgroundColor: 'none',
+        },
+      },
+    },
     MuiToolbar: {
       root: {
         '& .MuiPickersTimePickerToolbar-ampmSelection .MuiPickersToolbarText-toolbarBtnSelected':

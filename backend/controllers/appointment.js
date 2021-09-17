@@ -12,6 +12,36 @@ const getAppointments = async (req, res) => {
   } catch (e) {}
 };
 
+const getAppointmentsBetweenDates = async (req, res) => {
+  const { startWeek, endWeek } = req.body;
+  const userId = req.user._id;
+  const appointmentsOfWeek = [[], [], [], [], [], [], []];
+
+  try {
+    const appointments = await Appointment.find({
+      userId,
+      date: {
+        $gte: moment(startWeek).startOf('day').toDate(),
+        $lte: moment(endWeek).endOf('day').toDate(),
+      },
+    });
+
+    appointments.forEach(appointment => {
+      const appointmentDate = moment(appointment.date);
+      const dayIndex = appointmentDate.day() + 1;
+
+      appointmentsOfWeek[dayIndex - 1] = [
+        ...appointmentsOfWeek[dayIndex - 1],
+        appointment,
+      ];
+    });
+
+    res.send(appointmentsOfWeek);
+  } catch (e) {
+    res.status(400).send();
+  }
+};
+
 const insertAppointmentFromLandingPage = async (req, res) => {
   const { fullName, date, service, time, phone, userId } = req.body;
   const { serviceId, serviceName } = service;
@@ -249,4 +279,5 @@ module.exports = {
   getAvailableHoursExternal,
   getAppointments,
   cancelAppointment,
+  getAppointmentsBetweenDates,
 };

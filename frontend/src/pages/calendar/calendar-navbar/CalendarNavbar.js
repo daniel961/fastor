@@ -63,15 +63,6 @@ export const CalendarNavbar = ({
           style={{ height: '100%', flex: 2 }}
         >
           <MenuItem item>
-            <MenuButton
-              variant='text'
-              onClick={() => history.push('/calendar')}
-            >
-              יומן תורים
-            </MenuButton>
-          </MenuItem>
-
-          <MenuItem item>
             <MenuButton variant='text' onClick={openNewAppointmentDialog}>
               קביעת תור
             </MenuButton>

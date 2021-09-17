@@ -93,8 +93,6 @@ export const NewAppointment = () => {
     } catch (err) {}
   };
 
-  console.log(errors);
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TextField
