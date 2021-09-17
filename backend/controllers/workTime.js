@@ -43,7 +43,19 @@ const getWorkTimes = async (req, res) => {
   }
 };
 
+const getWorkTimesExternal = async (req, res) => {
+  const { userId } = req.body.userId;
+
+  try {
+    const workTimes = await WorkTime.find({ userId });
+    res.send(workTimes);
+  } catch (err) {
+    res.status(400).send();
+  }
+};
+
 module.exports = {
   insertWorkTimes,
   getWorkTimes,
+  getWorkTimesExternal,
 };
