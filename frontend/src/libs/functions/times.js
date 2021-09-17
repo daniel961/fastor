@@ -34,3 +34,19 @@ export const isBetweenHours = (rangeStart, rangeEnd, from, to) => {
 
   return false;
 };
+
+export const enumerateDaysBetweenDates = (startDate, endDate) => {
+  const now = moment(startDate).clone(),
+    dates = [];
+
+  while (now.isSameOrBefore(endDate)) {
+    dates.push({
+      date: now.format('DD/MM'),
+      dayName: now.format('dddd'),
+    });
+
+    now.add(1, 'days');
+  }
+
+  return dates;
+};

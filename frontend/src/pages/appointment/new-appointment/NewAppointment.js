@@ -38,6 +38,28 @@ export const NewAppointment = () => {
   }, [history]);
 
   useEffect(() => {
+    const fetchWorkTimes = async () => {
+      try {
+        const response = await http.post('/business/get-work-times-external', {
+          userId,
+        });
+
+        if (response.status === 200) {
+          if (response.data) {
+            const days = response.data[0].activityTimes.map(activity => {
+              return activity.days[0];
+            });
+
+            setWorkDays(days);
+          }
+        }
+      } catch (e) {}
+    };
+
+    fetchWorkTimes();
+  }, [userId]);
+
+  useEffect(() => {
     const fetchServices = async () => {
       try {
         const response = await http.post('/service/get-services', {
@@ -64,20 +86,19 @@ export const NewAppointment = () => {
         );
 
         setAvailableHours(response.data.availableHours);
-        setWorkDays(response.data.workDays);
       } catch (err) {}
     };
 
     if (serviceIdValue && dateValue) {
       fetchAvailableHours();
     }
-  }, [dateValue, userId, serviceIdValue]);
+  }, [dateValue, userId, serviceIdValue, workDays]);
 
   const onSubmit = async ({ fullName, date, service }) => {
     try {
       const response = await http.post('/appointment/insert', {
         fullName,
-        date,
+        date: dateValue.format(),
         service: {
           serviceId: serviceIdValue,
           serviceName: service,
@@ -124,8 +145,8 @@ export const NewAppointment = () => {
         disablePast
         disableToolbar
         helperText={errors?.date?.message}
-        defaultValue={null}
         disabled={!serviceIdValue}
+        defaultValue={null}
         shouldDisableDate={day => {
           const dayName = moment(day).locale('en').format('dddd').toLowerCase();
           const year = day.year();

@@ -17,7 +17,7 @@ import notifications from '../../../libs/icons/notifications.svg';
 import Share from './share/Share';
 
 export const CalendarNavbar = ({
-  openNewAppointmentDialog,
+  openNewAppointmentsDialog,
   openBlockAppointmentsDialog,
 }) => {
   const isSmallScreen = useSmallScreen();
@@ -63,7 +63,7 @@ export const CalendarNavbar = ({
           style={{ height: '100%', flex: 2 }}
         >
           <MenuItem item>
-            <MenuButton variant='text' onClick={openNewAppointmentDialog}>
+            <MenuButton variant='text' onClick={openNewAppointmentsDialog}>
               קביעת תור
             </MenuButton>
           </MenuItem>

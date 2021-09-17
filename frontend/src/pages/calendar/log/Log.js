@@ -4,24 +4,44 @@ import { useMediaQuery } from '@material-ui/core';
 import DayColumn from './day-column/DayColumn';
 import moment from 'moment';
 
-export const Log = ({ weekAppointments, selectedDateValue }) => {
-  const matches = useMediaQuery('(max-width: 768px)');
+export const Log = ({ weekAppointments, selectedDateValue, weekDates }) => {
+  const matchesWidth = useMediaQuery('(max-width: 999px)');
   const currentDayWeekIndex = moment(selectedDateValue).day();
 
   return (
     <LogWrapper>
-      {!matches ? (
-        weekAppointments.map((dayAppointments, index) => {
-          if (dayAppointments.length > 0) {
-            return (
-              <Fragment key={index}>
-                <DayColumn dayAppointments={dayAppointments} />
-              </Fragment>
-            );
-          }
+      {!matchesWidth ? (
+        <>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              padding: '1.2rem 4rem',
+            }}
+          >
+            {weekDates?.map(({ date, dayName }) => {
+              return (
+                <strong key={date}>
+                  {date} - {dayName}
+                </strong>
+              );
+            })}
+          </div>
 
-          return <div key={index}>אין תורים ביום זה</div>;
-        })
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            {weekAppointments.map((dayAppointments, index) => {
+              if (dayAppointments.length > 0) {
+                return (
+                  <Fragment key={index}>
+                    <DayColumn dayAppointments={dayAppointments} />
+                  </Fragment>
+                );
+              }
+
+              return <div key={index}>אין תורים ביום זה</div>;
+            })}
+          </div>
+        </>
       ) : weekAppointments[currentDayWeekIndex]?.length > 0 ? (
         <DayColumn dayAppointments={weekAppointments[currentDayWeekIndex]} />
       ) : (
