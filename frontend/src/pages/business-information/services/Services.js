@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Grid } from '@material-ui/core';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { TextField, ErrorText, Select, Button } from '../../../ui';
-import { hrs, mins } from '../hourAndMinutes';
+import { hrs, mins } from '../../../libs/utils/hourAndMinutes';
 
 export const Services = ({ services, setServices }) => {
   const {

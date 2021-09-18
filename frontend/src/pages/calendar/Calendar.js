@@ -116,11 +116,13 @@ export const Calendar = () => {
       />
 
       <BlockAppointmentsDialog
+        workDays={workDays}
         isBlockAppointmentsDialogOpen={blockAppointmentsDialogOpen}
         closeBlockAppointmentsDialog={closeBlockAppointmentsDialog}
       />
 
       <NewAppointmentsDialog
+        workDays={workDays}
         isNewAppointmentsDialogOpen={newAppointmentsDialogOpen}
         closeNewAppointmentsDialog={closeNewAppointmentsDialog}
       />

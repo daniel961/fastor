@@ -409,6 +409,132 @@ const cancelAppointment = async (req, res) => {
 
 const insertBlockedAppointment = async (req, res) => {
   const userId = req.user._id;
+  const { date, fromTime, toTime } = req.body;
+
+  if (!date || !fromTime || !toTime) {
+    res.status(400).send('נא להזין את כל השדות');
+  }
+
+  try {
+    const currentAppointments = await Appointment.find({
+      userId,
+      date: {
+        $gte: moment(date).startOf('day').toDate(),
+        $lte: moment(date).endOf('day').toDate(),
+      },
+    });
+
+    // TODO: Check if the business work in this specific date (day)
+    const workTimes = await WorkTime.find({ userId });
+    const dayName = moment(date).format('dddd');
+
+    const isWorkingDay = workTimes[0].activityTimes.some(({ days }) => {
+      return days[0] === dayName.toLowerCase();
+    });
+
+    if (!isWorkingDay) {
+      return res.status(400).send('העסק לא עובד ביום זה');
+    }
+
+    // TODO: Check if the fromTime is before toTime
+    const fromTimeMoment = moment(fromTime, 'HH:mm');
+    const toTimeMoment = moment(toTime, 'HH:mm');
+    const isReasonableHoursRange = toTimeMoment.isAfter(fromTimeMoment);
+
+    if (!isReasonableHoursRange) {
+      return res.status(400).send('השעות שבחרת לא הגיוניות.');
+    }
+
+    // TODO: Check if the business work between those fromTime and toTime
+    let businessStartHour;
+    let businessEndHour;
+
+    workTimes.forEach(workTime => {
+      workTime.activityTimes.forEach(activity => {
+        if (activity.days[0] === dayName.toLowerCase()) {
+          businessStartHour = activity.workingHours.from;
+          businessEndHour = activity.workingHours.to;
+        }
+      });
+    });
+
+    const businessStartMoment = moment(businessStartHour, 'HH:mm');
+    const businessEndMoment = moment(businessEndHour, 'HH:mm');
+
+    const isBetweenWorkingHours =
+      fromTimeMoment.isSameOrAfter(businessStartMoment) &&
+      toTimeMoment.isSameOrBefore(businessEndMoment);
+
+    if (!isBetweenWorkingHours) {
+      // TODO: send the working hours in this response
+      return res.status(400).send('השעות שבחרת הן לא בין שעות הפעילות');
+    }
+
+    // TODO: Check if there is any existing appointment in those hours
+    const currentAppointmentsTimes = currentAppointments.map(
+      ({ time }) => time,
+    );
+
+    const isBusyHours = currentAppointmentsTimes.some(appointment => {
+      const appointmentFrom = moment(appointment.from, 'HH:mm');
+      const appointmentTo = moment(appointment.to, 'HH:mm');
+
+      const isBusy =
+        (fromTimeMoment.isBetween(appointmentFrom, appointmentTo) &&
+          toTimeMoment.isBetween(appointmentFrom, appointmentTo)) ||
+        (fromTimeMoment.isBefore(appointmentFrom) &&
+          toTimeMoment.isBetween(appointmentFrom, appointmentTo)) ||
+        (fromTimeMoment.isBetween(appointmentFrom, appointmentTo) &&
+          toTimeMoment.isAfter(appointmentTo)) ||
+        (fromTimeMoment.isSame(appointmentFrom) &&
+          toTimeMoment.isSame(appointmentTo)) ||
+        (fromTimeMoment.isSame(appointmentFrom) &&
+          toTimeMoment.isBetween(appointmentFrom, appointmentTo)) ||
+        (fromTimeMoment.isBetween(appointmentFrom, appointmentTo) &&
+          toTimeMoment.isSame(appointmentTo)) ||
+        (appointmentFrom.isBetween(fromTimeMoment, toTimeMoment) &&
+          appointmentTo.isBetween(fromTimeMoment, toTimeMoment)) ||
+        (appointmentFrom.isBefore(fromTimeMoment) &&
+          appointmentTo.isBetween(fromTimeMoment, toTimeMoment)) ||
+        (appointmentFrom.isBetween(fromTimeMoment, toTimeMoment) &&
+          appointmentTo.isAfter(toTimeMoment)) ||
+        (appointmentFrom.isSame(fromTimeMoment) &&
+          appointmentTo.isSame(toTimeMoment)) ||
+        (appointmentFrom.isSame(fromTimeMoment) &&
+          appointmentTo.isBetween(fromTimeMoment, toTimeMoment)) ||
+        (appointmentFrom.isBetween(fromTimeMoment, toTimeMoment) &&
+          appointmentTo.isSame(toTimeMoment));
+
+      return isBusy;
+    });
+
+    if (isBusyHours) {
+      return res
+        .status(400)
+        .send(
+          'ישנם תורים  חסימות קיימות בשעות שבחרת. לא ניתן לחסום את שעות אלו.',
+        );
+    }
+
+    const blockedAppointment = await Appointment.create({
+      fullName: 'חסימה',
+      date,
+      service: {},
+      phone: '0521234567',
+      time: {
+        from: fromTime,
+        to: toTime,
+      },
+      userId,
+      isBlocked: true,
+    });
+
+    if (blockedAppointment) {
+      res.send();
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = {

@@ -44,7 +44,6 @@ const appointmentSchema = new mongoose.Schema({
 
       phoneSchema.isValid(value).then(valid => {
         if (!valid) {
-          console.log('her');
           throw new Error('מספר הטלפון לא  תקין');
         }
       });

@@ -10,11 +10,11 @@ import { phoneNumberPattern } from '../../../libs/utils/regex-patterns';
 export const NewAppointmentDialog = ({
   isNewAppointmentsDialogOpen,
   closeNewAppointmentsDialog,
+  workDays,
 }) => {
   const [availableHours, setAvailableHours] = useState([]);
   const [services, setServices] = useState([]);
   const [serviceIdValue, setServiceIdValue] = useState('');
-  const [workDays, setWorkDays] = useState([]);
   const [selectedHours, setSelectedHours] = useState({});
   const {
     control,
@@ -30,26 +30,6 @@ export const NewAppointmentDialog = ({
   const dateValue = watch('date');
   const isTimeFieldDisabled =
     !!serviceIdValue && !!dateValue && availableHours.length > 0;
-
-  useEffect(() => {
-    const fetchWorkTimes = async () => {
-      try {
-        const response = await http.get('/business/get-work-times');
-
-        if (response.status === 200) {
-          if (response.data) {
-            const days = response.data[0].activityTimes.map(activity => {
-              return activity.days[0];
-            });
-
-            setWorkDays(days);
-          }
-        }
-      } catch (e) {}
-    };
-
-    fetchWorkTimes();
-  }, []);
 
   useEffect(() => {
     const fetchServices = async () => {

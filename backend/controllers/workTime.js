@@ -44,7 +44,7 @@ const getWorkTimes = async (req, res) => {
 };
 
 const getWorkTimesExternal = async (req, res) => {
-  const { userId } = req.body.userId;
+  const { userId } = req.body;
 
   try {
     const workTimes = await WorkTime.find({ userId });
