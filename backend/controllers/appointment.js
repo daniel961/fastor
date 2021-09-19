@@ -537,6 +537,46 @@ const insertBlockedAppointment = async (req, res) => {
   }
 };
 
+const editAppointment = async (req, res) => {
+  const { appointmentId, service, time } = req.body;
+  const userId = req.user._id;
+
+  try {
+    const services = await Service.findOne({ userId });
+    const selectedService = services.services.find(
+      ({ _id }) => _id.toString() === service.serviceId,
+    );
+
+    const serviceDuration = moment
+      .duration(selectedService.duration, 'minutes')
+      .asMinutes();
+
+    console.log(serviceDuration);
+
+    const appointmentTime = {
+      from: time.from,
+      to: moment(time.from, 'HH:mm')
+        .add(serviceDuration.toString(), 'minutes')
+        .format('HH:mm'),
+    };
+
+    const updatedAppointment = await Appointment.findOneAndUpdate(
+      { _id: appointmentId },
+      {
+        ...req.body,
+        time: appointmentTime,
+      },
+    );
+
+    if (updatedAppointment) {
+      res.send();
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(400).send();
+  }
+};
+
 module.exports = {
   insertAppointmentFromLandingPage,
   insertAppointmentFromCalendar,
@@ -546,4 +586,5 @@ module.exports = {
   cancelAppointment,
   getAppointmentsBetweenDates,
   insertBlockedAppointment,
+  editAppointment,
 };

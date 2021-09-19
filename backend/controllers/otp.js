@@ -29,7 +29,7 @@ const sendSms = (to, digits) =>
 
     try {
       const res = await axios.post(
-        'https://www.019sms.co.il:8090/api/test',
+        'https://www.019sms.co.il:8090/api',
         body,
         config,
       );

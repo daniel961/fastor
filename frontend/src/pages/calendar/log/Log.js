@@ -4,7 +4,13 @@ import { useMediaQuery } from '@material-ui/core';
 import DayColumn from './day-column/DayColumn';
 import moment from 'moment';
 
-export const Log = ({ weekAppointments, selectedDateValue, weekDates }) => {
+export const Log = ({
+  weekAppointments,
+  selectedDateValue,
+  weekDates,
+  workDays,
+  getAppointmentsBetweenDates,
+}) => {
   const matchesWidth = useMediaQuery('(max-width: 999px)');
   const currentDayWeekIndex = moment(selectedDateValue).day();
 
@@ -33,7 +39,11 @@ export const Log = ({ weekAppointments, selectedDateValue, weekDates }) => {
               if (dayAppointments.length > 0) {
                 return (
                   <Fragment key={index}>
-                    <DayColumn dayAppointments={dayAppointments} />
+                    <DayColumn
+                      dayAppointments={dayAppointments}
+                      workDays={workDays}
+                      getAppointmentsBetweenDates={getAppointmentsBetweenDates}
+                    />
                   </Fragment>
                 );
               }
@@ -43,7 +53,11 @@ export const Log = ({ weekAppointments, selectedDateValue, weekDates }) => {
           </div>
         </>
       ) : weekAppointments[currentDayWeekIndex]?.length > 0 ? (
-        <DayColumn dayAppointments={weekAppointments[currentDayWeekIndex]} />
+        <DayColumn
+          dayAppointments={weekAppointments[currentDayWeekIndex]}
+          workDays={workDays}
+          getAppointmentsBetweenDates={getAppointmentsBetweenDates}
+        />
       ) : (
         <div>אין תורים ביום זה</div>
       )}

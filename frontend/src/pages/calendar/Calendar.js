@@ -29,40 +29,37 @@ export const Calendar = () => {
       try {
         const response = await http.get('/business/get-work-times');
 
-        if (response.status === 200) {
-          if (response.data) {
-            const days = response.data[0].activityTimes.map(activity => {
-              return activity.days[0];
-            });
+        if (response.status === 200 && response.data) {
+          const days = response.data[0].activityTimes.map(activity => {
+            return activity.days[0];
+          });
 
-            setWorkDays(days);
-          }
+          setWorkDays(days);
         }
       } catch (e) {
         console.log(e);
       }
     };
-
     fetchWorkTimes();
   }, []);
 
+  const getAppointmentsBetweenDates = async () => {
+    try {
+      const response = await http.post(
+        '/appointment/get-appointments-between',
+        {
+          startWeek,
+          endWeek,
+        },
+      );
+
+      if (response.status === 200) {
+        setWeekAppointments(response.data);
+      }
+    } catch (error) {}
+  };
+
   useEffect(() => {
-    const getAppointmentsBetweenDates = async () => {
-      try {
-        const response = await http.post(
-          '/appointment/get-appointments-between',
-          {
-            startWeek,
-            endWeek,
-          },
-        );
-
-        if (response.status === 200) {
-          setWeekAppointments(response.data);
-        }
-      } catch (error) {}
-    };
-
     if (!newAppointmentsDialogOpen) {
       getAppointmentsBetweenDates();
     }
@@ -113,6 +110,8 @@ export const Calendar = () => {
         weekAppointments={weekAppointments}
         selectedDateValue={selectedDateValue}
         weekDates={weekDates}
+        workDays={workDays}
+        getAppointmentsBetweenDates={getAppointmentsBetweenDates}
       />
 
       <BlockAppointmentsDialog
@@ -122,6 +121,7 @@ export const Calendar = () => {
       />
 
       <NewAppointmentsDialog
+        editMode={false}
         workDays={workDays}
         isNewAppointmentsDialogOpen={newAppointmentsDialogOpen}
         closeNewAppointmentsDialog={closeNewAppointmentsDialog}

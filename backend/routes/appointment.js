@@ -9,6 +9,7 @@ const {
   cancelAppointment,
   getAppointmentsBetweenDates,
   insertBlockedAppointment,
+  editAppointment,
 } = require('../controllers/appointment');
 
 router.post('/insert', insertAppointmentFromLandingPage);
@@ -19,5 +20,6 @@ router.post('/get-appointments', getAppointments);
 router.post('/cancel-appointment', cancelAppointment);
 router.post('/get-appointments-between', auth, getAppointmentsBetweenDates);
 router.post('/insert-blocked-appointment', auth, insertBlockedAppointment);
+router.post('/edit-appointment', auth, editAppointment);
 
 module.exports = router;

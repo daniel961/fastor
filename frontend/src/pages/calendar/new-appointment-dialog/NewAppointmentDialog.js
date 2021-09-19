@@ -11,6 +11,9 @@ export const NewAppointmentDialog = ({
   isNewAppointmentsDialogOpen,
   closeNewAppointmentsDialog,
   workDays,
+  editMode,
+  editAppointmentDetails,
+  getAppointmentsBetweenDates,
 }) => {
   const [availableHours, setAvailableHours] = useState([]);
   const [services, setServices] = useState([]);
@@ -49,50 +52,102 @@ export const NewAppointmentDialog = ({
     }
   }, [isNewAppointmentsDialogOpen]);
 
-  useEffect(() => {
-    const fetchAvailableHours = async () => {
-      try {
-        const response = await http.post(
-          '/appointment/available-times-internal',
-          { date: dateValue, serviceId: serviceIdValue },
-        );
+  const fetchAvailableHours = async (
+    existingDate,
+    existingHours,
+    existingServiceId,
+  ) => {
+    try {
+      const response = await http.post(
+        '/appointment/available-times-internal',
+        {
+          date: existingDate || dateValue,
+          serviceId: existingServiceId || serviceIdValue,
+        },
+      );
 
+      if (existingHours) {
+        const hours = [existingHours, ...response.data.availableHours];
+        setAvailableHours(hours);
+      } else {
         setAvailableHours(response.data.availableHours);
-      } catch (err) {}
-    };
+      }
+    } catch (err) {}
+  };
 
-    if (serviceIdValue && dateValue) {
+  useEffect(() => {
+    if (serviceIdValue && dateValue && !editMode) {
       fetchAvailableHours();
     }
   }, [dateValue, serviceIdValue, workDays]);
 
-  const onSubmit = async ({ fullName, date, service, phone }) => {
-    try {
-      const response = await http.post('/appointment/insert-internal', {
+  useEffect(() => {
+    if (editMode && isNewAppointmentsDialogOpen && availableHours.length < 1) {
+      const { fullName, phone, date, service, time } = editAppointmentDetails;
+      reset({
         fullName,
-        date: moment(date),
-        service: {
-          serviceId: serviceIdValue,
-          serviceName: service,
-        },
-        time: selectedHours,
         phone,
+        date,
+        service: service?.serviceName,
+        time: time?.from,
       });
 
-      if (response.status === 200) {
-        reset({});
-        closeNewAppointmentsDialog();
+      fetchAvailableHours(date, time, service?.serviceId);
+      setSelectedHours(time);
+      setServiceIdValue(service?.serviceId);
+    }
+  }, [editMode, editAppointmentDetails, isNewAppointmentsDialogOpen, reset]);
+
+  const onSubmit = async ({ fullName, date, service, phone }) => {
+    try {
+      if (editMode) {
+        const response = await http.post('/appointment/edit-appointment', {
+          appointmentId: editAppointmentDetails._id,
+          fullName,
+          date: moment(date),
+          service: {
+            serviceId: serviceIdValue,
+            serviceName: service,
+          },
+          time: selectedHours,
+          phone,
+        });
+
+        if (response.status === 200) {
+          fetchAvailableHours(date, selectedHours, serviceIdValue);
+          getAppointmentsBetweenDates();
+          closeNewAppointmentsDialog();
+        }
+      } else {
+        const response = await http.post('/appointment/insert-internal', {
+          fullName,
+          date: moment(date),
+          service: {
+            serviceId: serviceIdValue,
+            serviceName: service,
+          },
+          time: selectedHours,
+          phone,
+        });
+
+        if (response.status === 200) {
+          handleCloseDialog();
+        }
       }
     } catch (err) {
       console.log(err);
     }
   };
 
+  const handleCloseDialog = () => {
+    reset({});
+    closeNewAppointmentsDialog();
+  };
+
   return (
     <Dialog
       open={isNewAppointmentsDialogOpen}
       onClose={() => {
-        reset({});
         closeNewAppointmentsDialog();
       }}
     >
@@ -141,7 +196,7 @@ export const NewAppointmentDialog = ({
               .toLowerCase();
             const year = day.year();
             const currentYear = new Date().getFullYear();
-            return year !== currentYear || !workDays.includes(dayName);
+            return year !== currentYear || !workDays?.includes(dayName);
           }}
         />
 
@@ -155,7 +210,7 @@ export const NewAppointmentDialog = ({
           optionValue='from'
           helperText={errors?.time?.message}
           onChange={e => {
-            const selectedTime = availableHours.find(({ from, to }) => {
+            const selectedTime = availableHours.find(({ from }) => {
               return from === e.target.value;
             });
 
