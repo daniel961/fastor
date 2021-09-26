@@ -1,17 +1,23 @@
 import { useState, useEffect, useContext } from 'react';
 import { LoaderContext } from '../../context/loader/LoaderState';
-import { CalendarContainer, useDatepickerStyles } from './CalendarStyles';
-import { useFastorForm, usePrevious } from '../../libs/hooks';
-import { DatePicker } from '../../ui';
+import {
+  CalendarContainer,
+  useDatepickerStyles,
+  StaticDatepickerWrapper,
+} from './CalendarStyles';
+import { usePrevious } from '../../libs/hooks';
 import { enumerateDaysBetweenDates } from '../../libs/functions/times';
+import { TextField } from '@mui/material';
 import AdminNavbar from './calendar-navbar/CalendarNavbar';
 import BlockAppointmentsDialog from './block-appointments-dialog/BlockAppointmentsDialog';
 import NewAppointmentsDialog from './new-appointment-dialog/NewAppointmentDialog';
+import StaticDatePicker from '@mui/lab/StaticDatePicker';
 import Log from './log/Log';
 import moment from 'moment';
 import http from '../../axios';
 
 export const Calendar = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const { handleSetLoading } = useContext(LoaderContext);
   const [weekAppointments, setWeekAppointments] = useState([]);
   const [blockAppointmentsDialogOpen, setBlockAppointmentsDialogOpen] =
@@ -19,12 +25,10 @@ export const Calendar = () => {
   const [newAppointmentsDialogOpen, setNewAppointmentsDialogOpen] =
     useState(false);
   const [workDays, setWorkDays] = useState([]);
-  const { control, watch } = useFastorForm();
   const classes = useDatepickerStyles();
-  const selectedDateValue = watch('selectedDate');
-  const prevSelectedDate = usePrevious(selectedDateValue);
-  const startWeek = moment(selectedDateValue).startOf('week').format();
-  const endWeek = moment(selectedDateValue).endOf('week').format();
+  const prevSelectedDate = usePrevious(selectedDate);
+  const startWeek = moment(selectedDate).startOf('week').format();
+  const endWeek = moment(selectedDate).endOf('week').format();
   const weekDates = enumerateDaysBetweenDates(startWeek, endWeek);
 
   useEffect(() => {
@@ -59,7 +63,7 @@ export const Calendar = () => {
 
       if (response.status === 200) {
         setWeekAppointments(response.data);
-        handleSetLoading({ isLoading: false, delay: 2500 });
+        handleSetLoading({ isLoading: false, delay: 1800 });
       }
     } catch (error) {}
   };
@@ -75,15 +79,15 @@ export const Calendar = () => {
 
   useEffect(() => {
     const momentPrevDate = moment(prevSelectedDate);
-    const isSameWeek = moment(selectedDateValue).isSame(momentPrevDate, 'week');
+    const isSameWeek = moment(selectedDate).isSame(momentPrevDate, 'week');
 
-    if (!newAppointmentsDialogOpen && selectedDateValue && !isSameWeek) {
+    if (!newAppointmentsDialogOpen && selectedDate && !isSameWeek) {
       getAppointmentsBetweenDates();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    selectedDateValue,
+    selectedDate,
     startWeek,
     endWeek,
     newAppointmentsDialogOpen,
@@ -118,22 +122,33 @@ export const Calendar = () => {
         openNewAppointmentsDialog={openNewAppointmentsDialog}
       />
 
-      <DatePicker
-        name='selectedDate'
-        control={control}
-        variant='static'
-        className={classes.staticWrapperRoot}
-        shouldDisableDate={day => {
-          const dayName = moment(day).locale('en').format('dddd').toLowerCase();
-          const year = day.year();
-          const currentYear = new Date().getFullYear();
-          return year > currentYear || !workDays.includes(dayName);
-        }}
-      />
+      <StaticDatepickerWrapper>
+        <StaticDatePicker
+          orientation='landscape'
+          openTo='day'
+          value={selectedDate}
+          className={classes.root}
+          showToolbar={false}
+          views={['day']}
+          renderInput={params => <TextField {...params} />}
+          shouldDisableDate={day => {
+            const dayName = moment(day)
+              .locale('en')
+              .format('dddd')
+              .toLowerCase();
+            const year = day.year();
+            const currentYear = new Date().getFullYear();
+            return year > currentYear || !workDays.includes(dayName);
+          }}
+          onChange={newValue => {
+            setSelectedDate(newValue);
+          }}
+        />
+      </StaticDatepickerWrapper>
 
       <Log
         weekAppointments={weekAppointments}
-        selectedDateValue={selectedDateValue}
+        selectedDateValue={selectedDate}
         weekDates={weekDates}
         workDays={workDays}
         getAppointmentsBetweenDates={getAppointmentsBetweenDates}
