@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CalendarContainer, useDatepickerStyles } from './CalendarStyles';
-import { useFastorForm } from '../../libs/hooks';
+import { useFastorForm, usePrevious } from '../../libs/hooks';
 import { DatePicker } from '../../ui';
 import { enumerateDaysBetweenDates } from '../../libs/functions/times';
 import AdminNavbar from './calendar-navbar/CalendarNavbar';
@@ -20,6 +20,7 @@ export const Calendar = () => {
   const { control, watch } = useFastorForm();
   const classes = useDatepickerStyles();
   const selectedDateValue = watch('selectedDate');
+  const prevSelectedDate = usePrevious(selectedDateValue);
   const startWeek = moment(selectedDateValue).startOf('week').format();
   const endWeek = moment(selectedDateValue).endOf('week').format();
   const weekDates = enumerateDaysBetweenDates(startWeek, endWeek);
@@ -48,8 +49,8 @@ export const Calendar = () => {
       const response = await http.post(
         '/appointment/get-appointments-between',
         {
-          startWeek,
-          endWeek,
+          startWeek: startWeek || moment(new Date()).startOf('week').format(),
+          endWeek: endWeek || moment(new Date()).endOf('week').format(),
         },
       );
 
@@ -61,10 +62,29 @@ export const Calendar = () => {
 
   useEffect(() => {
     if (!newAppointmentsDialogOpen) {
+      // Trigger call at first mount with default dates inside getAppointmentsBetweenDates function
       getAppointmentsBetweenDates();
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDateValue, startWeek, endWeek, newAppointmentsDialogOpen]);
+  }, [newAppointmentsDialogOpen]);
+
+  useEffect(() => {
+    const momentPrevDate = moment(prevSelectedDate);
+    const isSameWeek = moment(selectedDateValue).isSame(momentPrevDate, 'week');
+
+    if (!newAppointmentsDialogOpen && selectedDateValue && !isSameWeek) {
+      getAppointmentsBetweenDates();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    selectedDateValue,
+    startWeek,
+    endWeek,
+    newAppointmentsDialogOpen,
+    prevSelectedDate,
+  ]);
 
   /**
    * TODO: Check if user have services & workingTimes & business information set up before showing him this calendar,
