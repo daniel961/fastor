@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Button } from '../../../../ui';
 import NewAppointmentDialog from '../../new-appointment-dialog/NewAppointmentDialog';
+import moment from 'moment';
 
 export const DayColumn = ({
   dayAppointments,
@@ -14,6 +15,13 @@ export const DayColumn = ({
   return (
     <div>
       {dayAppointments?.map((appointment, index) => {
+        const now = moment();
+        const appointmentDate = moment(appointment.date);
+        const { from } = appointment.time;
+        const [hour, minute] = from.split(':');
+        appointmentDate.set({ hour, minute });
+        const diff = moment.utc(now.diff(appointmentDate))._i;
+
         return (
           <div key={index}>
             <p>{appointment.fullName}</p>
@@ -23,7 +31,7 @@ export const DayColumn = ({
             <p>{appointment?.service?.serviceName}</p>
             <p>{!appointment.isBlocked && appointment.phone}</p>
             <div>
-              {!appointment.isBlocked && (
+              {!appointment.isBlocked && diff <= 0 && (
                 <Button
                   onClick={() => {
                     setEditAppointmentDetails(appointment);
@@ -34,9 +42,12 @@ export const DayColumn = ({
                 </Button>
               )}
             </div>
-            <div>
-              <Button>ביטול</Button>
-            </div>
+
+            {diff <= 0 && (
+              <div>
+                <Button>ביטול</Button>
+              </div>
+            )}
           </div>
         );
       })}

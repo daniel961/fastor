@@ -26,7 +26,18 @@ const getAppointmentsBetweenDates = async (req, res) => {
       },
     });
 
-    appointments.forEach(appointment => {
+    const sortedAppointments = appointments.sort((a, b) => {
+      const fromA = moment(a.time.from, 'HH:mm');
+      const fromB = moment(b.time.from, 'HH:mm');
+
+      if (fromA.isBefore(fromB)) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+
+    sortedAppointments.forEach(appointment => {
       const appointmentDate = moment(appointment.date);
       const dayIndex = appointmentDate.day() + 1;
 
@@ -208,6 +219,7 @@ const getAvailableHoursInternal = async (req, res) => {
   const userId = req.user._id;
   const dayOfWeek = moment(date).format('dddd');
   const optionalAppointments = [];
+  let serviceDurationInMinutes;
   let workFrom;
   let workTo;
   let currentWorkingHour;
@@ -550,8 +562,6 @@ const editAppointment = async (req, res) => {
     const serviceDuration = moment
       .duration(selectedService.duration, 'minutes')
       .asMinutes();
-
-    console.log(serviceDuration);
 
     const appointmentTime = {
       from: time.from,

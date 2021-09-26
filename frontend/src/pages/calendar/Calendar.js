@@ -63,6 +63,7 @@ export const Calendar = () => {
     if (!newAppointmentsDialogOpen) {
       getAppointmentsBetweenDates();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDateValue, startWeek, endWeek, newAppointmentsDialogOpen]);
 
   /**

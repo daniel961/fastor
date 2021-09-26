@@ -33,6 +33,7 @@ export const NewAppointmentDialog = ({
   const dateValue = watch('date');
   const isTimeFieldDisabled =
     !!serviceIdValue && !!dateValue && availableHours.length > 0;
+  const haveAvailableHours = availableHours.length;
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -79,24 +80,32 @@ export const NewAppointmentDialog = ({
     if (serviceIdValue && dateValue && !editMode) {
       fetchAvailableHours();
     }
-  }, [dateValue, serviceIdValue, workDays]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dateValue, serviceIdValue, workDays, editMode]);
 
   useEffect(() => {
-    if (editMode && isNewAppointmentsDialogOpen && availableHours.length < 1) {
+    if (editMode && isNewAppointmentsDialogOpen && !haveAvailableHours) {
       const { fullName, phone, date, service, time } = editAppointmentDetails;
+
       reset({
         fullName,
         phone,
         date,
-        service: service?.serviceName,
-        time: time?.from,
       });
 
       fetchAvailableHours(date, time, service?.serviceId);
       setSelectedHours(time);
       setServiceIdValue(service?.serviceId);
     }
-  }, [editMode, editAppointmentDetails, isNewAppointmentsDialogOpen, reset]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    editMode,
+    editAppointmentDetails,
+    isNewAppointmentsDialogOpen,
+    reset,
+    dateValue,
+    serviceIdValue,
+  ]);
 
   const onSubmit = async ({ fullName, date, service, phone }) => {
     try {
@@ -116,6 +125,7 @@ export const NewAppointmentDialog = ({
         if (response.status === 200) {
           fetchAvailableHours(date, selectedHours, serviceIdValue);
           getAppointmentsBetweenDates();
+          reset();
           closeNewAppointmentsDialog();
         }
       } else {
@@ -219,7 +229,7 @@ export const NewAppointmentDialog = ({
           }}
         />
 
-        <Button type='submit'>קביעת תור</Button>
+        <Button type='submit'>{editMode ? 'שמירת תור' : 'קביעת תור'}</Button>
       </form>
     </Dialog>
   );
