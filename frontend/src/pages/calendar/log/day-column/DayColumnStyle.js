@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Card } from '@mui/material';
+import { Card } from '../../../../ui';
 
 export const AppointmentCard = styled(Card)`
   margin-bottom: 2rem;

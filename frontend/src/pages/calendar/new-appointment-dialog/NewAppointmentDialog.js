@@ -84,7 +84,12 @@ export const NewAppointmentDialog = ({
   }, [dateValue, serviceIdValue, workDays, editMode]);
 
   useEffect(() => {
-    if (editMode && isNewAppointmentsDialogOpen && !haveAvailableHours) {
+    if (
+      editMode &&
+      isNewAppointmentsDialogOpen &&
+      !haveAvailableHours &&
+      editAppointmentDetails?.date
+    ) {
       const { fullName, phone, date, service, time } = editAppointmentDetails;
 
       reset({
