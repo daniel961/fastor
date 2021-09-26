@@ -1,6 +1,8 @@
-import { Dialog as MuiDialog } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import { makeStyles, IconButton } from '@material-ui/core';
+import { Dialog as MuiDialog } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import { IconButton } from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 export const Dialog = props => {
   const classes = useStyles();
@@ -15,7 +17,7 @@ export const Dialog = props => {
         <IconButton
           onClick={props.onClose}
           style={{ left: '0', top: '0', position: 'absolute' }}
-        >
+          size="large">
           <CloseIcon />
         </IconButton>
       )}

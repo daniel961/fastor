@@ -1,5 +1,6 @@
-import { DatePicker as MuiDatePicker } from '@material-ui/pickers';
+import { DatePicker as MuiDatePicker } from '@mui/lab';
 import { Controller } from 'react-hook-form';
+import { TextField } from '@mui/material';
 
 export const DatePicker = ({
   name,
@@ -28,6 +29,7 @@ export const DatePicker = ({
             autoOk
             disablePast={disablePast}
             className={className}
+            renderInput={props => <TextField {...props} />}
             {...rest}
             {...props}
           />

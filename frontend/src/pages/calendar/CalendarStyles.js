@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 
 export const CalendarContainer = styled.div`
   background: ${props => props.theme.palette.primary.light};

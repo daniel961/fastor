@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { Checkbox, Select, ErrorText } from '../../../ui';
 import { hrs, mins } from '../../../libs/utils/hourAndMinutes';
 

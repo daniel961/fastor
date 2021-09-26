@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { TextField, ErrorText, Select, Button } from '../../../ui';
 import { hrs, mins } from '../../../libs/utils/hourAndMinutes';

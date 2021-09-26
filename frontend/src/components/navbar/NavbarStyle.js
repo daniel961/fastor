@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import styled from 'styled-components/macro';
 import { mobile } from '../../libs/styles';
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { TextField } from '../../ui';
 import { ContinueButton } from '../../components/styled';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
 import { useFastorForm } from '../../libs/hooks';
 import { registerFormSchema } from './registerSchemas';
 import { useHistory } from 'react-router-dom';

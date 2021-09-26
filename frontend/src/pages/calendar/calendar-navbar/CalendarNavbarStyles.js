@@ -1,8 +1,8 @@
 import styled from 'styled-components/macro';
-import { Grid, IconButton } from '@material-ui/core';
+import { Grid, IconButton } from '@mui/material';
 import { Button } from '../../../ui';
 import { mobile } from '../../../libs/styles';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export const CalendarNavbarContainer = styled(Grid)`
   height: 8rem;

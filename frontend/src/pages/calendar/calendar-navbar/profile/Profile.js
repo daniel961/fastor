@@ -1,5 +1,5 @@
 // import { useEffect, useState } from 'react';
-import { Menu, MenuItem } from '@material-ui/core';
+import { Menu, MenuItem } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import http from '../../../../axios';
 import Cookies from 'universal-cookie';

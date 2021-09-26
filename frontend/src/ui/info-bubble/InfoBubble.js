@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
-import { IconButton, Paper } from '@material-ui/core';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { IconButton, Paper } from '@mui/material';
 
 export const InfoBubble = ({
   showBubble,
@@ -13,7 +13,7 @@ export const InfoBubble = ({
 }) => {
   return (
     <InfoBubbleWrapper className={className}>
-      <IconButton onClick={onClick}>
+      <IconButton onClick={onClick} size="large">
         <InfoOutlinedIcon />
       </IconButton>
 

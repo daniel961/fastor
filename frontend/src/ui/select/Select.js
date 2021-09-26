@@ -4,7 +4,7 @@ import {
   InputLabel,
   FormControl,
   FormHelperText,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { useStyles } from './SelectStyle';
 

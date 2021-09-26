@@ -7,7 +7,7 @@ import {
   IconButtonStyle,
   VertIcon,
 } from './CalendarNavbarStyles';
-import { Grid, IconButton, useMediaQuery } from '@material-ui/core';
+import { Grid, IconButton, useMediaQuery } from '@mui/material';
 import { useSmallScreen } from '../../../libs/hooks';
 import { useHistory } from 'react-router-dom';
 import logo from '../../../libs/icons/logo.svg';
@@ -93,7 +93,7 @@ export const CalendarNavbar = ({
           item
           style={{ display: 'flex', flex: 1, justifyContent: 'flex-end' }}
         >
-          <IconButton>
+          <IconButton size="large">
             <VertIcon />
           </IconButton>
         </Grid>

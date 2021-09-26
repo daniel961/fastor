@@ -1,4 +1,4 @@
-import { Button as MuiButton } from '@material-ui/core';
+import { Button as MuiButton } from '@mui/material';
 import { useButtonStyles } from './CardStyle';
 
 export const Button = props => {

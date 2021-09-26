@@ -7,21 +7,22 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 // Theming & RTL
 import {
-  jssPreset,
-  StylesProvider,
   ThemeProvider as MuiThemeProvider,
-} from '@material-ui/core/styles';
+  StyledEngineProvider,
+} from '@mui/material/styles';
+import jssPreset from '@mui/styles/jssPreset';
+import StylesProvider from '@mui/styles/StylesProvider';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from './styles';
 import theme from './theme';
 import { create } from 'jss';
 import rtl from 'jss-rtl';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import CssBaseline from '@mui/material/CssBaseline';
 
 // Moment & datepickers
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { LocalizationProvider } from '@mui/lab';
+import AdapterMoment from '@mui/lab/AdapterMoment';
 import moment from 'moment';
-import MomentUtils from '@date-io/moment';
 import 'moment/locale/he';
 import 'moment-timezone';
 
@@ -36,26 +37,24 @@ moment.locale('he');
 moment.tz('Asia/Jerusalem');
 
 ReactDOM.render(
-  <Suspense fallback={'loading...'}>
-    <Router>
-      <MuiPickersUtilsProvider
-        libInstance={moment}
-        utils={MomentUtils}
-        locale='he'
-      >
-        <StylesProvider injectFirst>
-          <MuiThemeProvider theme={theme}>
-            <ThemeProvider theme={theme}>
-              <GlobalStyles />
-              <RTL>
-                <CssBaseline />
-                <App />
-              </RTL>
-            </ThemeProvider>
-          </MuiThemeProvider>
-        </StylesProvider>
-      </MuiPickersUtilsProvider>
-    </Router>
-  </Suspense>,
+  <StyledEngineProvider injectFirst>
+    <MuiThemeProvider theme={theme}>
+      <Suspense fallback={'loading...'}>
+        <Router>
+          <LocalizationProvider dateAdapter={AdapterMoment} locale='he'>
+            <StylesProvider injectFirst>
+              <ThemeProvider theme={theme}>
+                <GlobalStyles />
+                <RTL>
+                  <CssBaseline />
+                  <App />
+                </RTL>
+              </ThemeProvider>
+            </StylesProvider>
+          </LocalizationProvider>
+        </Router>
+      </Suspense>
+    </MuiThemeProvider>
+  </StyledEngineProvider>,
   document.getElementById('root'),
 );

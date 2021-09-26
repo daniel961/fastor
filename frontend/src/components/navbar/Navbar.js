@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Button } from '../../ui';
 import { Logo, NavbarContainer, GridStyle } from './NavbarStyle';

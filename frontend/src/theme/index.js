@@ -1,92 +1,94 @@
-import { createTheme } from '@material-ui/core';
+import { createTheme, adaptV4Theme } from '@mui/material';
 
-export default createTheme({
-  direction: 'rtl',
-  typography: {
-    htmlFontSize: 10,
-    fontFamily: 'Heebo',
-  },
-  palette: {
-    primary: {
-      main: '#265FB1',
-      light: '#D5E6FF',
+export default createTheme(
+  adaptV4Theme({
+    direction: 'rtl',
+    typography: {
+      htmlFontSize: 10,
+      fontFamily: 'Heebo',
     },
-    secondary: {
-      main: '#FFB462',
-    },
-    error: {
-      main: '#F97575',
-    },
-  },
-  overrides: {
-    MuiDialogActions: {
-      root: {
-        margin: '0 auto',
+    palette: {
+      primary: {
+        main: '#265FB1',
+        light: '#D5E6FF',
+      },
+      secondary: {
+        main: '#FFB462',
+      },
+      error: {
+        main: '#F97575',
       },
     },
-    MuiDialog: {
-      paperScrollPaper: {
-        maxHeight: 'calc(100% - 31px)',
+    overrides: {
+      MuiDialogActions: {
+        root: {
+          margin: '0 auto',
+        },
       },
-    },
-    MuiPickersDay: {
-      daySelected: {
-        backgroundColor: 'none',
-        color: '#265FB1',
-        border: '1px solid #265FB1',
-        '&:hover': {
+      MuiDialog: {
+        paperScrollPaper: {
+          maxHeight: 'calc(100% - 31px)',
+        },
+      },
+      MuiPickersDay: {
+        daySelected: {
           backgroundColor: 'none',
-        },
-      },
-    },
-    MuiToolbar: {
-      root: {
-        '& .MuiPickersTimePickerToolbar-ampmSelection .MuiPickersToolbarText-toolbarBtnSelected':
-          {
-            border: '1px solid white',
-            padding: '.5rem',
+          color: '#265FB1',
+          border: '1px solid #265FB1',
+          '&:hover': {
+            backgroundColor: 'none',
           },
+        },
       },
-    },
-    MuiFormHelperText: {
-      root: {
-        '&$error': {
-          margin: '2px 0',
+      MuiToolbar: {
+        root: {
+          '& .MuiPickersTimePickerToolbar-ampmSelection .MuiPickersToolbarText-toolbarBtnSelected':
+            {
+              border: '1px solid white',
+              padding: '.5rem',
+            },
+        },
+      },
+      MuiFormHelperText: {
+        root: {
+          '&$error': {
+            margin: '2px 0',
+          },
+        },
+      },
+      MuiFormControl: {
+        root: {
+          margin: '.5rem 0',
+        },
+      },
+      MuiTypography: {
+        body1: {
+          fontSize: '1.8rem',
+        },
+        h1: {
+          fontSize: '4rem',
+        },
+        h2: {
+          fontSize: '1.8rem',
+        },
+      },
+      MuiButton: {
+        label: {
+          fontSize: '1.8rem',
+          fontWeight: 'normal',
+          color: '#265FB1',
+        },
+      },
+      MuiFormLabel: {
+        root: {
+          fontSize: '1.8rem',
+        },
+      },
+      MuiInputBase: {
+        root: {
+          fontSize: '1.8rem',
         },
       },
     },
-    MuiFormControl: {
-      root: {
-        margin: '.5rem 0',
-      },
-    },
-    MuiTypography: {
-      body1: {
-        fontSize: '1.8rem',
-      },
-      h1: {
-        fontSize: '4rem',
-      },
-      h2: {
-        fontSize: '1.8rem',
-      },
-    },
-    MuiButton: {
-      label: {
-        fontSize: '1.8rem',
-        fontWeight: 'normal',
-        color: '#265FB1',
-      },
-    },
-    MuiFormLabel: {
-      root: {
-        fontSize: '1.8rem',
-      },
-    },
-    MuiInputBase: {
-      root: {
-        fontSize: '1.8rem',
-      },
-    },
-  },
-});
+  }),
+);

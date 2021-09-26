@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 
 export const CardStyle = styled.div`
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.08);

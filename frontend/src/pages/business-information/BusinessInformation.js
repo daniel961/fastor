@@ -1,4 +1,4 @@
-import { MobileStepper } from '@material-ui/core/';
+import { MobileStepper } from '@mui/material/';
 import { Button } from '../../ui';
 import { useState, Fragment } from 'react';
 import {
@@ -6,8 +6,8 @@ import {
   InformationHeading,
   useStyles,
 } from './BusinessInformationStyles';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { useForm, FormProvider } from 'react-hook-form';
 import GeneralInformation from './general-information/GeneralInformation';
 import WorkingHours from './working-hours/WorkingHours';

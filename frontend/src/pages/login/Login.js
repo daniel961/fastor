@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { GradientButton, ContinueButton } from '../../components/styled';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { AlreadyHaveAccountText } from './LoginStyle';
 import { TextField, Checkbox, Button, ErrorText } from '../../ui';
 import { useFastorForm } from '../../libs/hooks';

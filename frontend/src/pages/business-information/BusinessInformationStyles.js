@@ -1,5 +1,7 @@
 import styled from 'styled-components/macro';
-import { Typography, makeStyles } from '@material-ui/core';
+import { Typography } from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 export const BusinessInformationContainer = styled.div`
   margin: 0 auto;

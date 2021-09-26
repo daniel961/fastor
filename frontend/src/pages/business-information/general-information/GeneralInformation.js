@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { ErrorText, TextField } from '../../../ui';
 
 export const GeneralInformation = () => {

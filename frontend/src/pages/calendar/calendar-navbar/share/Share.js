@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Menu, Tooltip } from '@material-ui/core';
+import { Menu, Tooltip } from '@mui/material';
 import { TextField, Button } from '../../../../ui';
 import { useForm } from 'react-hook-form';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import http from '../../../../axios';
 
 const Share = props => {
@@ -60,6 +59,7 @@ const Share = props => {
       >
         סגירה
       </p>
+
       <Tooltip
         PopperProps={{
           disablePortal: true,
@@ -71,9 +71,14 @@ const Share = props => {
         disableTouchListener
         title='הועתק'
       >
-        <CopyToClipboard text={businessInformation?.landingPageUrl}>
-          <Button onClick={handleTooltipOpen}>העתקת כתובת</Button>
-        </CopyToClipboard>
+        <Button
+          onClick={() => {
+            navigator.clipboard.writeText(businessInformation?.landingPageUrl);
+            handleTooltipOpen();
+          }}
+        >
+          העתקת כתובת
+        </Button>
       </Tooltip>
 
       <TextField name='link' control={control} disabled />

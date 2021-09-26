@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { LogWrapper } from './LogStyles';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery } from '@mui/material';
 import DayColumn from './day-column/DayColumn';
 import moment from 'moment';
 

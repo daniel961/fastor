@@ -1,4 +1,4 @@
-import { TextField as MuiTextField } from '@material-ui/core';
+import { TextField as MuiTextField } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { useTextFieldStyles } from './TextFieldStyle';
 
