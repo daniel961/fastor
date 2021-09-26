@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { LoaderContext } from '../../context/loader/LoaderState';
 import { CalendarContainer, useDatepickerStyles } from './CalendarStyles';
 import { useFastorForm, usePrevious } from '../../libs/hooks';
 import { DatePicker } from '../../ui';
@@ -11,6 +12,7 @@ import moment from 'moment';
 import http from '../../axios';
 
 export const Calendar = () => {
+  const { handleSetLoading } = useContext(LoaderContext);
   const [weekAppointments, setWeekAppointments] = useState([]);
   const [blockAppointmentsDialogOpen, setBlockAppointmentsDialogOpen] =
     useState(false);
@@ -46,6 +48,7 @@ export const Calendar = () => {
 
   const getAppointmentsBetweenDates = async () => {
     try {
+      handleSetLoading({ isLoading: true });
       const response = await http.post(
         '/appointment/get-appointments-between',
         {
@@ -56,6 +59,7 @@ export const Calendar = () => {
 
       if (response.status === 200) {
         setWeekAppointments(response.data);
+        handleSetLoading({ isLoading: false, delay: 2500 });
       }
     } catch (error) {}
   };

@@ -26,6 +26,9 @@ import moment from 'moment';
 import 'moment/locale/he';
 import 'moment-timezone';
 
+// Context's
+import LoaderState from './context/loader/LoaderState';
+
 // Configure JSS
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
@@ -47,7 +50,9 @@ ReactDOM.render(
                 <GlobalStyles />
                 <RTL>
                   <CssBaseline />
-                  <App />
+                  <LoaderState>
+                    <App />
+                  </LoaderState>
                 </RTL>
               </ThemeProvider>
             </StylesProvider>

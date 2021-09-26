@@ -1,4 +1,11 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+import BlockUi from 'react-block-ui';
+
+export const StyledBlockUI = styled(BlockUi)`
+  .block-ui-container {
+    height: 100vh;
+  }
+`;
 
 const GlobalStyle = createGlobalStyle`
   * {
