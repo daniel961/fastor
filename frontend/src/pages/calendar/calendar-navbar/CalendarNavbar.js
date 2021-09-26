@@ -15,6 +15,7 @@ import profile from '../../../libs/icons/profile.svg';
 import share from '../../../libs/icons/share.svg';
 import notifications from '../../../libs/icons/notifications.svg';
 import Share from './share/Share';
+import Profile from './profile/Profile';
 
 export const CalendarNavbar = ({
   openNewAppointmentsDialog,
@@ -24,15 +25,26 @@ export const CalendarNavbar = ({
   const history = useHistory();
   const hideActionButtonsSize = useMediaQuery('(max-width: 980px)');
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const [anchorShare, setShareAnchor] = useState(null);
+  const [anchorProfile, setProfileAnchor] = useState(null);
 
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
+  const isShareOpened = Boolean(anchorShare);
+  const isProfileOpened = Boolean(anchorProfile);
+
+  const handleShareBtnClick = event => {
+    setShareAnchor(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleProfileBtnClick = event => {
+    setProfileAnchor(event.currentTarget);
+  };
+
+  const handleShareClose = () => {
+    setShareAnchor(null);
+  };
+
+  const handleProfileClose = () => {
+    setProfileAnchor(null);
   };
 
   return (
@@ -87,19 +99,31 @@ export const CalendarNavbar = ({
         </Grid>
       ) : (
         <IconsContainer item container alignItems='center'>
-          <IconButtonStyle onClick={handleClick}>
+          <IconButtonStyle onClick={handleShareBtnClick}>
             <img src={share} alt='שיתוף' />
           </IconButtonStyle>
+
           <IconButtonStyle>
             <img src={notifications} alt='התראות' />
           </IconButtonStyle>
-          <IconButtonStyle>
+
+          <IconButtonStyle onClick={handleProfileBtnClick}>
             <img src={profile} alt='פרופיל' />
           </IconButtonStyle>
         </IconsContainer>
       )}
 
-      <Share open={open} handleClose={handleClose} anchorEl={anchorEl} />
+      <Share
+        open={isShareOpened}
+        handleClose={handleShareClose}
+        anchorEl={anchorShare}
+      />
+
+      <Profile
+        open={isProfileOpened}
+        handleClose={handleProfileClose}
+        anchorEl={anchorProfile}
+      />
     </CalendarNavbarContainer>
   );
 };
