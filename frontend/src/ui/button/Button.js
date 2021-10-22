@@ -1,23 +1,10 @@
-import { Button as MuiButton } from '@mui/material';
-import { useButtonStyles } from './CardStyle';
+import { StyledButton } from "./ButtonStyles";
 
-export const Button = props => {
-  const classes = useButtonStyles();
-
+export const Button = (props) => {
   return (
-    <MuiButton
-      variant={props.variant || 'outlined'}
-      classes={{
-        root: classes.root,
-        outlined: classes.outlined,
-        text: classes.text,
-        contained: classes.contained,
-        disabled: classes.disabled,
-      }}
-      {...props}
-    >
+    <StyledButton variant={props.variant || "outlined"} {...props}>
       {props.children}
-    </MuiButton>
+    </StyledButton>
   );
 };
 

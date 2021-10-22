@@ -1,8 +1,7 @@
-import styled from 'styled-components/macro';
-import { Grid, IconButton } from '@mui/material';
-import { Button } from '../../../ui';
-import { mobile } from '../../../libs/styles';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Grid, IconButton, styled } from "@mui/material";
+import { Button } from "../../../ui";
+import { mobile } from "../../../libs/styles";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 export const CalendarNavbarContainer = styled(Grid)`
   height: 8rem;
@@ -24,6 +23,8 @@ export const MenuItem = styled(Grid)`
 export const MenuButton = styled(Button)`
   height: 100%;
   margin: 0 1.5rem;
+  font-size: 1.8rem;
+
   .MuiButton-label {
     text-decoration: none;
     color: black;

@@ -1,6 +1,5 @@
-import { Grid } from '@mui/material';
-import styled from 'styled-components/macro';
-import { mobile } from '../../libs/styles';
+import { Grid, styled } from "@mui/material";
+import { mobile } from "../../libs/styles";
 
 export const NavbarContainer = styled(Grid)`
   position: relative;
@@ -16,7 +15,7 @@ export const NavbarContainer = styled(Grid)`
   }
 `;
 
-export const Logo = styled.img`
+export const Logo = styled("img")`
   cursor: pointer;
 
   @media ${mobile} {

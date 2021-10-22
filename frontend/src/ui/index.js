@@ -8,3 +8,5 @@ export * from './dialog/Dialog';
 export * from './select/Select';
 export * from './hour-field/HourField';
 export * from './date-picker/DatePicker';
+export * from './slider/Slider';
+export * from './duration-picker/DurationPicker';

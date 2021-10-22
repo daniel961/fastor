@@ -1,94 +1,116 @@
-import { createTheme, adaptV4Theme } from '@mui/material';
+import { createTheme } from "@mui/material";
+import globalStyles from "./globalStyles";
 
-export default createTheme(
-  adaptV4Theme({
-    direction: 'rtl',
-    typography: {
-      htmlFontSize: 10,
-      fontFamily: 'Heebo',
+export default createTheme({
+  direction: "rtl",
+  typography: {
+    htmlFontSize: 10,
+    fontFamily: "Heebo",
+  },
+  palette: {
+    primary: {
+      main: "#265FB1",
+      light: "#D5E6FF",
     },
-    palette: {
-      primary: {
-        main: '#265FB1',
-        light: '#D5E6FF',
-      },
-      secondary: {
-        main: '#FFB462',
-      },
-      error: {
-        main: '#F97575',
-      },
+    secondary: {
+      main: "#FFB462",
     },
-    overrides: {
-      MuiDialogActions: {
+    error: {
+      main: "#F97575",
+    },
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: globalStyles,
+    },
+    MuiDialogActions: {
+      styleOverrides: {
         root: {
-          margin: '0 auto',
+          margin: "0 auto",
         },
       },
-      MuiDialog: {
+    },
+    MuiDialog: {
+      styleOverrides: {
         paperScrollPaper: {
-          maxHeight: 'calc(100% - 31px)',
+          maxHeight: "calc(100% - 31px)",
         },
       },
-      MuiPickersDay: {
+    },
+    MuiPickersDay: {
+      styleOverrides: {
         daySelected: {
-          backgroundColor: 'none',
-          color: '#265FB1',
-          border: '1px solid #265FB1',
-          '&:hover': {
-            backgroundColor: 'none',
+          backgroundColor: "none",
+          color: "#265FB1",
+          border: "1px solid #265FB1",
+          "&:hover": {
+            backgroundColor: "none",
           },
         },
       },
-      MuiToolbar: {
+    },
+    MuiToolbar: {
+      styleOverrides: {
         root: {
-          '& .MuiPickersTimePickerToolbar-ampmSelection .MuiPickersToolbarText-toolbarBtnSelected':
+          "& .MuiPickersTimePickerToolbar-ampmSelection .MuiPickersToolbarText-toolbarBtnSelected":
             {
-              border: '1px solid white',
-              padding: '.5rem',
+              border: "1px solid white",
+              padding: ".5rem",
             },
         },
       },
-      MuiFormHelperText: {
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
         root: {
-          '&$error': {
-            margin: '2px 0',
+          "&$error": {
+            margin: "2px 0",
           },
         },
       },
-      MuiFormControl: {
+    },
+    MuiFormControl: {
+      styleOverrides: {
         root: {
-          margin: '.5rem 0',
-        },
-      },
-      MuiTypography: {
-        body1: {
-          fontSize: '1.8rem',
-        },
-        h1: {
-          fontSize: '4rem',
-        },
-        h2: {
-          fontSize: '1.8rem',
-        },
-      },
-      MuiButton: {
-        label: {
-          fontSize: '1.8rem',
-          fontWeight: 'normal',
-          color: '#265FB1',
-        },
-      },
-      MuiFormLabel: {
-        root: {
-          fontSize: '1.8rem',
-        },
-      },
-      MuiInputBase: {
-        root: {
-          fontSize: '1.8rem',
+          margin: ".5rem 0",
         },
       },
     },
-  }),
-);
+    MuiTypography: {
+      styleOverrides: {
+        body1: {
+          fontSize: "1.8rem",
+        },
+        h1: {
+          fontSize: "4rem",
+        },
+        h2: {
+          fontSize: "1.8rem",
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        label: {
+          fontSize: "1.8rem",
+          fontWeight: "normal",
+          color: "#265FB1",
+        },
+      },
+    },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          fontSize: "1.8rem",
+        },
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          fontSize: "1.8rem",
+        },
+      },
+    },
+  },
+});

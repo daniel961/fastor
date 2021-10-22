@@ -29,6 +29,7 @@ export const TextField = ({
           className={className}
           helperText={helperText}
           error={!!helperText}
+          variant='standard'
         />
       )}
     />

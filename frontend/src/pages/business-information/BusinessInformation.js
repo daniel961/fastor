@@ -1,28 +1,28 @@
-import { MobileStepper } from '@mui/material/';
-import { Button } from '../../ui';
-import { useState, Fragment } from 'react';
+import { useState, Fragment } from "react";
+import { MobileStepper } from "@mui/material/";
+import { Button } from "../../ui";
 import {
   BusinessInformationContainer,
   InformationHeading,
   useStyles,
-} from './BusinessInformationStyles';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import { useForm, FormProvider } from 'react-hook-form';
-import GeneralInformation from './general-information/GeneralInformation';
-import WorkingHours from './working-hours/WorkingHours';
-import Services from './services/Services';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useHistory } from 'react-router-dom';
+} from "./BusinessInformationStyles";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import { useForm, FormProvider } from "react-hook-form";
+import GeneralInformation from "./general-information/GeneralInformation";
+import WorkingHours from "./working-hours/WorkingHours";
+import Services from "./services/Services";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useHistory } from "react-router-dom";
 import {
   businessInformationFormSchema,
   servicesSchema,
   workingHoursFormSchema,
-} from './businessInformationSchemas';
-import { englishWorkingDays } from '../../libs/utils/globals';
-import http from '../../axios';
+} from "./businessInformationSchemas";
+import { englishWorkingDays } from "../../libs/utils/globals";
+import http from "../../axios";
 
-const resolver = activeStep => {
+const resolver = (activeStep) => {
   switch (activeStep) {
     case 0:
       return yupResolver(businessInformationFormSchema);
@@ -48,7 +48,7 @@ export const BusinessInformation = () => {
     switch (activeStep) {
       case 0:
         try {
-          const response = await http.post('/business/add-business', {
+          const response = await http.post("/business/add-business", {
             name,
             address,
             phone,
@@ -80,17 +80,17 @@ export const BusinessInformation = () => {
   ];
 
   const handleNext = () => {
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleServicesNext = async () => {
     if (activeStep === 1 && services.length > 0) {
       try {
-        const response = await http.post('/service/insert', {
+        const response = await http.post("/service/insert", {
           services,
         });
 
@@ -101,7 +101,7 @@ export const BusinessInformation = () => {
     }
   };
 
-  const handleWorkingHoursSubmit = async formValues => {
+  const handleWorkingHoursSubmit = async (formValues) => {
     const selectedWorkDays = [];
 
     Object.entries(formValues).forEach(([key, value]) => {
@@ -128,11 +128,11 @@ export const BusinessInformation = () => {
     };
 
     try {
-      const res = await http.post('/business/insert-work-times', data);
+      const res = await http.post("/business/insert-work-times", data);
 
       // TODO: Add loader & display nice error
       if (res.status === 200) {
-        history.push('/calendar');
+        history.push("/calendar");
       }
     } catch (err) {
       console.log(err);
@@ -141,12 +141,12 @@ export const BusinessInformation = () => {
 
   return (
     <BusinessInformationContainer>
-      <InformationHeading variant='h1' component='h1'>
-        הגדרת העסק
-      </InformationHeading>
-
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <form onSubmit={methods.handleSubmit(onSubmit)} id="inner-card">
+          <InformationHeading variant="h1" component="h1">
+            הגדרת העסק
+          </InformationHeading>
+
           <div>
             {stepsMapping.map(({ stepNumber, component }) => {
               if (stepNumber === activeStep) {
@@ -158,21 +158,22 @@ export const BusinessInformation = () => {
           </div>
 
           <MobileStepper
-            variant='dots'
+            variant="dots"
             steps={3}
-            position='static'
+            position="static"
             activeStep={activeStep}
             className={classes.root}
+            sx={{ maxHeight: "4rem" }}
             nextButton={
               <Button
                 type={
-                  activeStep === 1 && services.length > 0 ? 'button' : 'submit'
+                  activeStep === 1 && services.length > 0 ? "button" : "submit"
                 }
-                variant='text'
+                variant="text"
                 disabled={services.length === 0 && activeStep === 1}
                 onClick={handleServicesNext}
               >
-                {activeStep === 2 ? 'סיום' : 'הבא'}
+                {activeStep === 2 ? "סיום" : "הבא"}
                 <KeyboardArrowLeft />
               </Button>
             }
@@ -181,7 +182,7 @@ export const BusinessInformation = () => {
                 <ButtonPlaceholder />
               ) : (
                 <Button
-                  variant='text'
+                  variant="text"
                   disabled={activeStep === 0}
                   onClick={handleBack}
                 >
@@ -197,6 +198,6 @@ export const BusinessInformation = () => {
   );
 };
 
-const ButtonPlaceholder = () => <div style={{ width: '10rem' }}></div>;
+const ButtonPlaceholder = () => <div style={{ width: "10rem" }}></div>;
 
 export default BusinessInformation;

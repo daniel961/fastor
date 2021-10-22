@@ -1,16 +1,16 @@
-import styled from 'styled-components/macro';
+import { styled } from "@mui/material";
 
 export const ErrorText = ({ text, children, className }) => {
   return (
     <div className={className}>
       {children}
-      <ErrorTextStyle id='error-span'>{text}</ErrorTextStyle>
+      <ErrorTextStyle id="error-span">{text}</ErrorTextStyle>
     </div>
   );
 };
 
-const ErrorTextStyle = styled.span`
-  color: ${props => props.theme.palette.error.main};
+const ErrorTextStyle = styled("span")`
+  color: ${(props) => props.theme.palette.error.main};
   display: block;
   font-size: 1.2rem;
 `;

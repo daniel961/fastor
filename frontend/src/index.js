@@ -1,65 +1,58 @@
-import { Suspense } from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import { Suspense } from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
 
 // Routers
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from "react-router-dom";
 
 // Theming & RTL
-import {
-  ThemeProvider as MuiThemeProvider,
-  StyledEngineProvider,
-} from '@mui/material/styles';
-import jssPreset from '@mui/styles/jssPreset';
-import StylesProvider from '@mui/styles/StylesProvider';
-import { ThemeProvider } from 'styled-components';
-import GlobalStyles from './styles';
-import theme from './theme';
-import { create } from 'jss';
-import rtl from 'jss-rtl';
-import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
+import theme from "./theme";
+import CssBaseline from "@mui/material/CssBaseline";
+import { StylesProvider } from "@mui/styles";
+import rtlPlugin from "stylis-plugin-rtl";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
 
 // Moment & datepickers
-import { LocalizationProvider } from '@mui/lab';
-import AdapterMoment from '@mui/lab/AdapterMoment';
-import moment from 'moment';
-import 'moment/locale/he';
-import 'moment-timezone';
+import { LocalizationProvider } from "@mui/lab";
+import AdapterMoment from "@mui/lab/AdapterMoment";
+import moment from "moment";
+import "moment/locale/he";
+import "moment-timezone";
 
 // Context's
-import LoaderState from './context/loader/LoaderState';
+import LoaderState from "./context/loader/LoaderState";
 
-// Configure JSS
-const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
+moment.locale("he");
+moment.tz("Asia/Jerusalem");
+
+// Create rtl cache
+const cacheRtl = createCache({
+  key: "muirtl",
+  stylisPlugins: [rtlPlugin],
+});
 
 function RTL(props) {
-  return <StylesProvider jss={jss}>{props.children}</StylesProvider>;
+  return <CacheProvider value={cacheRtl}>{props.children}</CacheProvider>;
 }
 
-moment.locale('he');
-moment.tz('Asia/Jerusalem');
-
 ReactDOM.render(
-  <StyledEngineProvider injectFirst>
-    <MuiThemeProvider theme={theme}>
-      <Suspense fallback={'loading...'}>
+  <MuiThemeProvider theme={theme}>
+    <RTL>
+      <Suspense fallback={"loading..."}>
         <Router>
-          <LocalizationProvider dateAdapter={AdapterMoment} locale='he'>
+          <LocalizationProvider dateAdapter={AdapterMoment} locale="he">
             <StylesProvider injectFirst>
-              <ThemeProvider theme={theme}>
-                <GlobalStyles />
-                <RTL>
-                  <CssBaseline />
-                  <LoaderState>
-                    <App />
-                  </LoaderState>
-                </RTL>
-              </ThemeProvider>
+              <LoaderState>
+                <CssBaseline />
+                <App />
+              </LoaderState>
             </StylesProvider>
           </LocalizationProvider>
         </Router>
       </Suspense>
-    </MuiThemeProvider>
-  </StyledEngineProvider>,
-  document.getElementById('root'),
+    </RTL>
+  </MuiThemeProvider>,
+  document.getElementById("root")
 );

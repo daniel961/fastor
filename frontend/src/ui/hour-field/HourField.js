@@ -1,15 +1,15 @@
-import TimePicker from 'react-time-picker';
-import { Controller } from 'react-hook-form';
-import trashIcon from './trash_icon.svg';
-import styled from 'styled-components/macro';
+import TimePicker from "react-time-picker";
+import { Controller } from "react-hook-form";
+import trashIcon from "./trash_icon.svg";
+import { styled } from "@mui/material";
 
 export const HourField = ({
   label,
   name,
   control,
-  minutePlaceholder = 'דקה',
-  hourPlaceholder = 'שעה',
-  defaultValue = '',
+  minutePlaceholder = "דקה",
+  hourPlaceholder = "שעה",
+  defaultValue = "",
   className,
   disabled,
 }) => {
@@ -22,12 +22,12 @@ export const HourField = ({
         defaultValue={defaultValue}
         render={({ field }) => (
           <TimePicker
-            style={{ direction: 'ltr' }}
+            style={{ direction: "ltr" }}
             minutePlaceholder={minutePlaceholder}
             hourPlaceholder={hourPlaceholder}
             disableClock
-            format='HH:mm'
-            clearIcon={<img src={trashIcon} alt='ניקוי שדה' />}
+            format="HH:mm"
+            clearIcon={<img src={trashIcon} alt="ניקוי שדה" />}
             disabled={disabled}
             {...field}
           />
@@ -37,14 +37,14 @@ export const HourField = ({
   );
 };
 
-const Label = styled.label`
-  font-size: 1.6rem;
+const Label = styled("label")`
+  font-size: 1.8rem;
   display: block;
   text-align: center;
   margin-bottom: 0.5rem;
 `;
 
-const HourFieldStyle = styled.div`
+const HourFieldStyle = styled("div")`
   max-width: 100px;
   .react-time-picker {
     direction: ltr;
@@ -55,7 +55,7 @@ const HourFieldStyle = styled.div`
       box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.08);
       width: 100px;
       height: 30px;
-      background: ${props => props.disabled && 'rgb(174 174 174 / 40%)'};
+      background: ${(props) => props.disabled && "rgb(174 174 174 / 40%)"};
     }
 
     &__clear-button {
@@ -76,7 +76,7 @@ const HourFieldStyle = styled.div`
         }
 
         &:invalid {
-          background: ${props => props.theme.palette.error.main};
+          background: ${(props) => props.theme.palette.error.main};
         }
       }
       &__leadingZero {

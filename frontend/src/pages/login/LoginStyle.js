@@ -1,13 +1,13 @@
-import styled from 'styled-components/macro';
-import { ErrorText } from '../../ui';
-import { mobile } from '../../libs/styles';
-import loginBackground from '../../libs/images/login_background.svg';
-import manStanding from '../../libs/images/man_standing.svg';
+import { styled } from "@mui/material";
+import { ErrorText, Button } from "../../ui";
+import { mobile } from "../../libs/styles";
+import { PageContainer } from "../../components/styled";
+import manStanding from "../../libs/images/man_standing.svg";
 
-export const AlreadyHaveAccountText = styled.span`
+export const AlreadyHaveAccountText = styled("span")`
   position: relative;
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     width: 5.5rem;
     height: 1px;
@@ -17,7 +17,7 @@ export const AlreadyHaveAccountText = styled.span`
   }
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     width: 5.5rem;
     height: 1px;
@@ -27,39 +27,21 @@ export const AlreadyHaveAccountText = styled.span`
   }
 `;
 
-export const FlowWrapperStyle = styled.div`
-  background: url(${loginBackground});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-
-  @media ${mobile} {
-    background: none;
-  }
-
-  #flow-card {
-    padding: 4rem 4.6rem;
-    margin-bottom: 5rem;
-    position: relative;
-
+export const LoginContainer = styled(PageContainer)`
+  #inner-card {
     &:before {
-      content: '';
+      content: "";
       width: 12rem;
       height: 36.6rem;
       background: blue;
       position: absolute;
       top: 10%;
-      right: -70px;
+      left: -70px;
       background: url(${manStanding});
 
       @media ${mobile} {
         background: none;
       }
-    }
-
-    @media ${mobile} {
-      padding: 0rem 1.6rem;
-      margin-bottom: 4rem;
     }
   }
 `;
@@ -69,5 +51,11 @@ export const ErrorTextStyle = styled(ErrorText)`
     margin: 1rem auto 0;
     max-width: 29rem;
     font-weight: 400;
+  }
+`;
+
+export const LoginButton = styled(Button)`
+  &.MuiButton-root {
+    min-width: 28rem;
   }
 `;

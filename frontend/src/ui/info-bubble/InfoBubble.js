@@ -1,7 +1,6 @@
-import styled from 'styled-components/macro';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import { IconButton, Paper } from '@mui/material';
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import { IconButton, Paper, styled } from "@mui/material";
 
 export const InfoBubble = ({
   showBubble,
@@ -32,7 +31,7 @@ export const InfoBubble = ({
   );
 };
 
-const InfoBubbleWrapper = styled.div`
+const InfoBubbleWrapper = styled("div")`
   position: relative;
 `;
 

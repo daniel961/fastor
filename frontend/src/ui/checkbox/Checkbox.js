@@ -1,8 +1,8 @@
-import { Controller } from 'react-hook-form';
-import { Checkbox as MuiCheckbox, FormControlLabel } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import { ReactComponent as CheckboxCircle } from './icons/checkbox_circle.svg';
-import { ReactComponent as CheckboxChecked } from './icons/checkbox_checked.svg';
+import { Controller } from "react-hook-form";
+import { Checkbox as MuiCheckbox, FormControlLabel } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { ReactComponent as CheckboxCircle } from "./icons/checkbox_circle.svg";
+import { ReactComponent as CheckboxChecked } from "./icons/checkbox_checked.svg";
 
 export const Checkbox = ({
   name,
@@ -32,7 +32,7 @@ export const Checkbox = ({
               icon={<CheckboxCircle />}
               checkedIcon={<CheckboxChecked />}
               {...field}
-              checked={field['value'] ?? false}
+              checked={field["value"] ?? false}
               disabled={disabled}
             />
           )}
@@ -42,10 +42,10 @@ export const Checkbox = ({
   );
 };
 
-const useCheckboxStyles = makeStyles(theme => ({
+const useCheckboxStyles = makeStyles((theme) => ({
   disabled: {
-    '& svg': {
-      fill: '#e2e2e2',
+    "& svg": {
+      fill: "#e2e2e2",
     },
   },
 }));
