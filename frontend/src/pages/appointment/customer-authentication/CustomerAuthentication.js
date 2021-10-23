@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { TextField, Button } from '../../../ui';
-import http from '../../../axios';
+import { useState } from "react";
+import { useParams, useHistory } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { TextField, Button } from "../../../ui";
+import http from "../../../axios";
 import {
   customerDetailsSchema,
   customerAuthenticationSchema,
-} from './customerAuthenticationSchemas';
-import { yupResolver } from '@hookform/resolvers/yup';
+} from "./customersAuthenticationSchemas";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export const CustomerAuthentication = () => {
   const [showCodeValidationField, setShowCodeValidationField] = useState(false);
@@ -24,15 +24,15 @@ export const CustomerAuthentication = () => {
   });
   const { userId, action } = useParams();
   const history = useHistory();
-  const customerPhoneValue = watch('customerPhone');
-  const validationCodeValue = watch('validationCode');
+  const customerPhoneValue = watch("customerPhone");
+  const validationCodeValue = watch("validationCode");
 
-  const onSubmit = async formValues => {
+  const onSubmit = async (formValues) => {
     const { customerPhone } = formValues;
 
     if (!showCodeValidationField) {
       try {
-        const res = await http.post('/otp/send-otp', {
+        const res = await http.post("/otp/send-otp", {
           phone: customerPhone,
           userId,
         });
@@ -43,14 +43,14 @@ export const CustomerAuthentication = () => {
       } catch (err) {}
     } else {
       try {
-        const res = await http.post('/otp/validate-otp', {
+        const res = await http.post("/otp/validate-otp", {
           customerPhone,
           userId,
           otpCode: validationCodeValue,
         });
 
         if (res.status === 200) {
-          if (action === 'edit') {
+          if (action === "edit") {
             return history.push({
               pathname: `/appointment/edit/${userId}`,
               state: {
@@ -67,9 +67,9 @@ export const CustomerAuthentication = () => {
           });
         }
       } catch (err) {
-        setError('validationCode', {
-          type: 'manual',
-          message: 'הקוד לא תואם. נסה שנית',
+        setError("validationCode", {
+          type: "manual",
+          message: "הקוד לא תואם. נסה שנית",
         });
       }
     }
@@ -81,12 +81,12 @@ export const CustomerAuthentication = () => {
         <>
           <TextField
             control={control}
-            name='customerPhone'
-            label='מה הנייד שלך ?'
-            type='tel'
+            name="customerPhone"
+            label="מה הנייד שלך ?"
+            type="tel"
             helperText={errors?.customerPhone?.message}
           />
-          <Button type='submit' disabled={!customerPhoneValue}>
+          <Button type="submit" disabled={!customerPhoneValue}>
             שליחת קוד אימות
           </Button>
         </>
@@ -96,13 +96,13 @@ export const CustomerAuthentication = () => {
         <>
           <TextField
             control={control}
-            name='validationCode'
-            label='מה הקוד שקיבלת ?'
-            type='number'
+            name="validationCode"
+            label="מה הקוד שקיבלת ?"
+            type="number"
             helperText={errors?.validationCode?.message}
           />
 
-          <Button type='submit'>אימות</Button>
+          <Button type="submit">אימות</Button>
         </>
       )}
     </form>
