@@ -1,6 +1,7 @@
 import * as yup from "yup";
 import { phoneNumberPattern } from "../../../libs/utils/regex-patterns";
 
+console.log("test");
 export const customerDetailsSchema = yup.object().shape({
   validationCode: yup
     .string()
