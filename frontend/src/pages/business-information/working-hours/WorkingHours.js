@@ -4,6 +4,8 @@ import { Grid, Divider, Typography, styled } from "@mui/material";
 import { Checkbox, ErrorText, DurationPicker } from "../../../ui";
 import { mobile } from "../../../libs/styles";
 import { LoaderContext } from "../../../context/loader/LoaderState";
+import { useSmallScreen } from "../../../libs/hooks";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import http from "../../../axios";
 
 const rows = [
@@ -25,6 +27,7 @@ export const WorkingHours = () => {
   } = useFormContext();
   const values = watch();
   const { handleSetLoading } = useContext(LoaderContext);
+  const isSmallScreen = useSmallScreen();
 
   useEffect(() => {
     handleSetLoading({ isLoading: true });
@@ -65,7 +68,8 @@ export const WorkingHours = () => {
     <ErrorText text={errors?.workDays?.message}>
       <Grid container justifyContent="center" sx={{ mt: "3rem" }}>
         <Typography variant="h2" component="h2" sx={{ mb: "2rem" }}>
-          יש לסמן את הימים שבהם העסק עובד ואת שעות ההתחלה והסיום באותו היום
+          תחילה יש לסמן את הימים שבהם העסק עובד ולאחר מכן את שעות ההתחלה והסיום
+          של כל יום נבחר
         </Typography>
 
         {rows.map(({ engName, hebName }) => {
@@ -95,11 +99,13 @@ export const WorkingHours = () => {
                 <Grid
                   item
                   container
+                  direction="column"
                   justifyContent="center"
                   alignItems="center"
                   md={2}
                 >
                   <ToText disabled={!values[engName]}>עד</ToText>
+                  {!isSmallScreen && <KeyboardBackspaceIcon />}
                 </Grid>
 
                 <Grid item md={4}>
