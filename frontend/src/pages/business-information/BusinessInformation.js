@@ -43,6 +43,7 @@ export const BusinessInformation = () => {
   const methods = useForm({
     resolver: resolver(activeStep),
   });
+
   const onSubmit = async ({ name, address, phone, ...rest }) => {
     switch (activeStep) {
       case 0:
