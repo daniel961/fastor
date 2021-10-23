@@ -12,7 +12,7 @@ export const ErrorText = ({ text, children, className }) => {
 const ErrorTextStyle = styled("span")`
   color: ${(props) => props.theme.palette.error.main};
   display: block;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 `;
 
 export default ErrorText;

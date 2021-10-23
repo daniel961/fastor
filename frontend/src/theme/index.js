@@ -37,8 +37,21 @@ export default createTheme({
         },
       },
     },
+    MuiCalendarPicker: {
+      styleOverrides: {
+        viewTransitionContainer: {
+          "& .MuiTypography-caption": {
+            fontWeight: "bold",
+            fontSize: "1.7rem",
+          },
+        },
+      },
+    },
     MuiPickersDay: {
       styleOverrides: {
+        root: {
+          fontSize: "1.5rem",
+        },
         daySelected: {
           backgroundColor: "none",
           color: "#265FB1",
@@ -78,6 +91,9 @@ export default createTheme({
     },
     MuiTypography: {
       styleOverrides: {
+        root: {
+          fontSize: "1.6rem",
+        },
         body1: {
           fontSize: "1.8rem",
         },

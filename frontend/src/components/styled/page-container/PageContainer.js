@@ -13,6 +13,7 @@ export const PageContainer = styled("div")`
 
   @media ${mobile} {
     background: none;
+    padding-top: 4rem;
   }
 
   #inner-card {

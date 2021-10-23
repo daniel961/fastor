@@ -43,7 +43,6 @@ export const BusinessInformation = () => {
   const methods = useForm({
     resolver: resolver(activeStep),
   });
-
   const onSubmit = async ({ name, address, phone, ...rest }) => {
     switch (activeStep) {
       case 0:
@@ -71,12 +70,13 @@ export const BusinessInformation = () => {
   };
 
   const stepsMapping = [
-    { stepNumber: 0, component: <GeneralInformation /> },
+    { stepNumber: 0, component: <GeneralInformation />, heading: "הגדרת העסק" },
     {
       stepNumber: 1,
       component: <Services services={services} setServices={setServices} />,
+      heading: "הגדרת שירותים",
     },
-    { stepNumber: 2, component: <WorkingHours /> },
+    { stepNumber: 2, component: <WorkingHours />, heading: "שעות פעילות" },
   ];
 
   const handleNext = () => {
@@ -143,14 +143,18 @@ export const BusinessInformation = () => {
     <BusinessInformationContainer>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)} id="inner-card">
-          <InformationHeading variant="h1" component="h1">
-            הגדרת העסק
-          </InformationHeading>
-
           <div>
-            {stepsMapping.map(({ stepNumber, component }) => {
+            {stepsMapping.map(({ stepNumber, component, heading }) => {
               if (stepNumber === activeStep) {
-                return <Fragment key={stepNumber}>{component}</Fragment>;
+                return (
+                  <Fragment key={stepNumber}>
+                    <InformationHeading variant="h1" component="h1">
+                      {heading}
+                    </InformationHeading>
+
+                    {component}
+                  </Fragment>
+                );
               }
 
               return null;

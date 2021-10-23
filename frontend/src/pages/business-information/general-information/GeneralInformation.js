@@ -1,14 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { Grid } from "@mui/material";
 import { ErrorText, TextField } from "../../../ui";
+import http from "../../../axios";
 
 export const GeneralInformation = () => {
   const {
     control,
+    reset,
     formState: { errors },
   } = useFormContext();
   const [errorText] = useState("");
+
+  useEffect(() => {
+    const fetchGeneralInformation = async () => {
+      try {
+        const { data } = await http.post("/business/information");
+
+        reset({
+          phone: data.businessInformation.phone,
+          address: data.businessInformation.address,
+          name: data.businessInformation.name,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    fetchGeneralInformation();
+  }, [reset]);
 
   return (
     <Grid
@@ -39,7 +59,7 @@ export const GeneralInformation = () => {
 
         <Grid item>
           <TextField
-            label="הכתובת של העסק"
+            label="הכתובת של העסק *"
             control={control}
             name="address"
             helperText={errors?.address?.message}

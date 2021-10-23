@@ -4,18 +4,18 @@ import {
   InputLabel,
   FormControl,
   FormHelperText,
-} from '@mui/material';
-import { Controller } from 'react-hook-form';
-import { useStyles } from './SelectStyle';
+} from "@mui/material";
+import { Controller } from "react-hook-form";
+import { useStyles } from "./SelectStyle";
 
-export const Select = props => {
+export const Select = (props) => {
   const classes = useStyles();
 
   return (
     <Controller
       name={props.name}
       control={props.control}
-      defaultValue={props.defaultValue || ''}
+      defaultValue={props.defaultValue || ""}
       render={({ field }) => {
         return (
           <FormControl className={props.className} error={!!props.helperText}>
@@ -25,20 +25,21 @@ export const Select = props => {
               MenuProps={{
                 className: classes.menu,
                 anchorOrigin: {
-                  vertical: 'bottom',
-                  horizontal: 'left',
+                  vertical: "bottom",
+                  horizontal: "left",
                 },
                 transformOrigin: {
-                  vertical: 'top',
-                  horizontal: 'left',
+                  vertical: "top",
+                  horizontal: "left",
                 },
                 getContentAnchorEl: null,
               }}
               {...field}
               onChange={props.onChange || field.onChange}
               disabled={props.disabled}
+              {...props}
             >
-              {props.options.map(option => {
+              {props.options.map((option) => {
                 return (
                   <MenuItem
                     key={option[props.optionKey] || option.key}
