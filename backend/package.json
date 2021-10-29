@@ -4,7 +4,11 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon ./bin/www",
+    "debug": "nodemon --inspect ./bin/www",
+    "AutoTestDb": "docker run --name auto-test-mongo -p 27017:27017 -d mongo:latest",
+    "enterdb": "sudo docker exec -it auto-test-mongo /bin/bash",
+    "test": "jest -i --detectOpenHandles"
   },
   "author": "Netanel Vaknin",
   "license": "ISC",
@@ -24,6 +28,8 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "jest": "^27.3.1",
+    "nodemon": "^2.0.12",
+    "supertest": "^6.1.6"
   }
 }
