@@ -6,9 +6,10 @@
   "scripts": {
     "start": "nodemon ./bin/www",
     "debug": "nodemon --inspect ./bin/www",
-    "AutoTestDb": "docker run --name auto-test-mongo -p 27017:27017 -d mongo:latest",
-    "enterdb": "sudo docker exec -it auto-test-mongo /bin/bash",
-    "test": "jest -i --detectOpenHandles"
+    "test": "jest -i --detectOpenHandles",
+    "autoTestDb": "docker run --name auto-test-mongo -p 27018:27017 -d mongo:latest",
+    "devDb": "docker run --name dev-mongo -p 27017:27017 -d mongo:latest",
+    "enterDbAutoTest": "docker exec -it auto-test-mongo /bin/bash"
   },
   "author": "Netanel Vaknin",
   "license": "ISC",

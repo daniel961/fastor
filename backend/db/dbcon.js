@@ -1,29 +1,32 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-dotenv.config();
+const path = require("path");
+dotenv.config({ path: path.join(__dirname, "/../", ".env") });
 
 let MONGODB_URI;
-
 switch (process.env.NODE_ENV) {
   case "development":
-    MONGODB_URI = "mongodb://localhost/fastor-dev";
+    MONGODB_URI = process.env.DEVMONGODB_URI;
     break;
-  case "test":
-    MONGODB_URI = "mongodb://localhost/fastor-autotest";
+  case "autotest":
+    MONGODB_URI = process.env.TESTMONGODB_URI;
     break;
   default:
     MONGODB_URI = process.env.MONGODB_URI;
     break;
 }
 
-module.exports = mongoose
+mongoose
   .connect(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then((res) => {
-    console.log(`Connected to ${process.env.NODE_ENV} database`);
+    if (process.env.NODE_ENV === "development")
+      console.log(`Connected to ${process.env.NODE_ENV} database`);
   })
   .catch((err) => {
     console.log("******* ERROR:", err);
   });
+
+module.exports = mongoose;

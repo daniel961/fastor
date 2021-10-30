@@ -1,5 +1,5 @@
-const User = require('../models/user');
-const passwordValidator = require('password-validator');
+const User = require("../models/user");
+const passwordValidator = require("password-validator");
 
 const passwordSchema = new passwordValidator();
 passwordSchema
@@ -19,20 +19,20 @@ const loginUser = async (req, res) => {
   try {
     const user = await User.findByCredentials(
       req.body.email,
-      req.body.password,
+      req.body.password
     );
 
     if (user) {
       const token = await user.generateAuthToken();
       const completeRegisteration = await user.checkForRegisterCompletion(
-        user._id,
+        user._id
       );
       res.status(200).send({ token, completeRegisteration });
     } else {
       throw new Error();
     }
   } catch (err) {
-    res.status(400).send('אימייל או  סיסמה לא תקינים');
+    res.status(400).send("אימייל או  סיסמה לא תקינים");
   }
 };
 
@@ -41,7 +41,7 @@ const registerUser = async (req, res) => {
 
   try {
     if (!passwordSchema.validate(body.password)) {
-      throw 'הסיסמה חייבת להכיל לפחות 6 תווים, ספרה אחת וסימן מיוחד אחד (לדוגמה סימן קריאה  סולמית וכו׳)';
+      throw "הסיסמה חייבת להכיל לפחות 6 תווים, ספרה אחת וסימן מיוחד אחד (לדוגמה סימן קריאה  סולמית וכו׳)";
     }
 
     const user = new User(body);
@@ -53,7 +53,7 @@ const registerUser = async (req, res) => {
     }
   } catch (err) {
     if (err.code === 11000) {
-      return res.status(400).send('מייל קיים במערכת. נא לנסות מייל אחר');
+      return res.status(400).send("מייל קיים במערכת. נא לנסות מייל אחר");
     }
 
     res.status(400).send(err);
@@ -62,7 +62,7 @@ const registerUser = async (req, res) => {
 
 const logoutUser = async (req, res) => {
   try {
-    req.user.tokens = req.user.tokens.filter(token => {
+    req.user.tokens = req.user.tokens.filter((token) => {
       return token.token !== req.token;
     });
 

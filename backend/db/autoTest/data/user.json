@@ -1,0 +1,16 @@
+[{
+    "_id" : "617d321fae5447d9d0faaea7",
+    "email" : "d9611652@gmail.com",
+    "password" : "$2b$08$Jna72Ta4TE6G2xuQTddYH.ToPNwnNeEU2f3I4NxOi6uRzntTC4Igq",
+    "emailConfirmed" : true,
+    "trail" : true,
+    "createdAt" : "2021-10-30T14:50:22+03:00",
+    "endTrailDate" : "2030-11-29T14:50:22+02:00",
+    "tokens" : [ 
+        {
+            "token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTdkMzIxZmFlNTQ0N2Q5ZDBmYWFlYTciLCJpYXQiOjE2MzU1OTQ3ODQsImV4cCI6MTY2NzEzMDc4NH0.BggfOV_TBYpmvaejw2uDE1buN73Iz-xMV4XczE5yB3w",
+            "_id" : "617d3220ae5447d9d0faaea9"
+        }
+    ],
+    "__v" : 1
+}]
