@@ -1,13 +1,10 @@
 process.env.NODE_ENV = "autotest";
 const fs = require("fs").promises;
-// todo make sure you doing that to auto test db only and allways check the enviroment variables
+const dataIndex = require("./dataIndex");
 
-// reset all data - remove all data and reload all records
-
-// start insert all data - the data will be json files and the names is the collection name
-
-// clear remove all data
-
+/**
+ * add data from data folder jsons files to autotest db
+ */
 const start = async () => {
   process.env.NODE_ENV = "autotest";
   const mongoose = require("../dbcon");
@@ -36,8 +33,39 @@ const finish = () => {};
 
 const reset = () => {};
 
-const dataGen = () => {
-  // fetch all data from data index
+/**
+ * create test data jsons files inside ./data folder - fetching from dev db - and filter by dataIndex
+ */
+const dataGen = async () => {
+  process.env.NODE_ENV = "development";
+  const mongoose = require("../dbcon");
+
+  const modelsPath = "../../models";
+  const fileExt = ".json";
+  const testDataPath = "./data";
+  const models = await loadFiles(modelsPath, ".js");
+  const modelsList = Object.keys(models);
+  const dataIndexCollectionNames = Object.keys(dataIndex);
+  try {
+    await Promise.all(
+      dataIndexCollectionNames.map(async (collectionName) => {
+        await Promise.all(
+          dataIndex[collectionName].map(async (query) => {
+            const data = await models[collectionName].find(query).exec();
+            await fs.writeFile(
+              `${testDataPath}/${collectionName}${fileExt}`,
+              data
+            );
+          })
+        );
+      })
+    );
+  } catch (err) {
+    console.log("Error while collection test data: ", err);
+    throw err;
+  } finally {
+    await mongoose.disconnect();
+  }
 };
 
 const loadFiles = async (path, fileType) => {
@@ -49,13 +77,21 @@ const loadFiles = async (path, fileType) => {
   return loadedObj;
 };
 
-start()
+dataGen()
   .then((res) => {
-    console.log("finished!");
+    console.log("finish data gen");
   })
   .catch((err) => {
-    console.log("Error:!");
     console.log(err);
   });
+
+// start()
+//   .then((res) => {
+//     console.log("finished!");
+//   })
+//   .catch((err) => {
+//     console.log("Error:!");
+//     console.log(err);
+//   });
 
 module.exports = reset;

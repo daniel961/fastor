@@ -1,4 +1,4 @@
-const Service = require('../models/service');
+const Service = require("../models/service");
 
 const addServices = async (req, res) => {
   const userId = req.user._id;
@@ -21,7 +21,7 @@ const addServices = async (req, res) => {
         {
           services: servicesBody,
           userId,
-        },
+        }
       );
 
       res.status(200).send();
