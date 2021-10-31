@@ -21,10 +21,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then((res) => {
-    if (process.env.NODE_ENV === "development")
-      console.log(`Connected to ${process.env.NODE_ENV} database`);
-  })
+  .then((res) => {})
   .catch((err) => {
     console.log("******* ERROR:", err);
   });

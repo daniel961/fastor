@@ -15,10 +15,9 @@ const start = async () => {
   const testDbCollections = Object.keys(testData);
   try {
     await Promise.all(
-      testDbCollections.map(
-        async (collectionName) =>
-          await models[collectionName].insertMany(testData[collectionName])
-      )
+      testDbCollections.map(async (collectionName) => {
+        await models[collectionName].insertMany(testData[collectionName]);
+      })
     );
   } catch (err) {
     console.log("Error while inserting auto test data: ", err);
@@ -28,11 +27,40 @@ const start = async () => {
   }
   return "auto test db filled with data";
 };
-
-const finish = () => {};
-
-const reset = () => {};
-
+/**
+ * delete all data from db
+ */
+const finish = async () => {
+  process.env.NODE_ENV = "autotest";
+  const mongoose = require("../dbcon");
+  const modelsPath = "../../models";
+  const models = await loadFiles(modelsPath, ".js");
+  const collectionList = Object.keys(models);
+  try {
+    await Promise.all(
+      collectionList.map(async (collectionName) => {
+        await models[collectionName].deleteMany({});
+      })
+    );
+  } catch (err) {
+    console.log("Error while clear auto test data: ", err);
+    throw err;
+  } finally {
+    await mongoose.disconnect();
+  }
+  return "auto test db cleared";
+};
+/**
+ * reset db - clear all data and insert test data jsons
+ */
+const reset = async () => {
+  try {
+    await finish();
+    await start();
+  } catch (err) {
+    console.log(`Error: while reset all data ${err}`);
+  }
+};
 /**
  * create test data jsons files inside ./data folder - fetching from dev db - and filter by dataIndex
  */
@@ -44,14 +72,15 @@ const dataGen = async () => {
   const fileExt = ".json";
   const testDataPath = "./data";
   const models = await loadFiles(modelsPath, ".js");
-  const modelsList = Object.keys(models);
   const dataIndexCollectionNames = Object.keys(dataIndex);
   try {
     await Promise.all(
       dataIndexCollectionNames.map(async (collectionName) => {
         await Promise.all(
           dataIndex[collectionName].map(async (query) => {
-            const data = await models[collectionName].find(query).exec();
+            let data = await models[collectionName].find().exec();
+            data = JSON.stringify(data);
+            console.log(data);
             await fs.writeFile(
               `${testDataPath}/${collectionName}${fileExt}`,
               data
@@ -67,7 +96,6 @@ const dataGen = async () => {
     await mongoose.disconnect();
   }
 };
-
 const loadFiles = async (path, fileType) => {
   const fileNames = await fs.readdir(path);
   const loadedObj = {};
@@ -77,21 +105,14 @@ const loadFiles = async (path, fileType) => {
   return loadedObj;
 };
 
-dataGen()
+finish()
   .then((res) => {
-    console.log("finish data gen");
+    start()
+      .then((res) => {
+        console.log("finish");
+      })
+      .catch((err) => {});
   })
   .catch((err) => {
     console.log(err);
   });
-
-// start()
-//   .then((res) => {
-//     console.log("finished!");
-//   })
-//   .catch((err) => {
-//     console.log("Error:!");
-//     console.log(err);
-//   });
-
-module.exports = reset;
