@@ -7,7 +7,6 @@ const dataIndex = require("./dataIndex");
  */
 const start = async () => {
   process.env.NODE_ENV = "autotest";
-  const mongoose = require("../dbcon");
   const modelsPath = "../../models";
   const testDataPath = "./data";
   const models = await loadFiles(modelsPath, ".js");
@@ -23,7 +22,6 @@ const start = async () => {
     console.log("Error while inserting auto test data: ", err);
     throw err;
   } finally {
-    await mongoose.disconnect();
   }
   return "auto test db filled with data";
 };
@@ -32,7 +30,7 @@ const start = async () => {
  */
 const finish = async () => {
   process.env.NODE_ENV = "autotest";
-  const mongoose = require("../dbcon");
+
   const modelsPath = "../../models";
   const models = await loadFiles(modelsPath, ".js");
   const collectionList = Object.keys(models);
@@ -46,21 +44,26 @@ const finish = async () => {
     console.log("Error while clear auto test data: ", err);
     throw err;
   } finally {
-    await mongoose.disconnect();
   }
   return "auto test db cleared";
 };
 /**
  * reset db - clear all data and insert test data jsons
+ * return promise
  */
 const reset = async () => {
+  const mongoose = require("../dbcon");
+  process.env.NODE_ENV = "autotest";
   try {
     await finish();
     await start();
   } catch (err) {
-    console.log(`Error: while reset all data ${err}`);
+    console.log(`Error: while reset data ${err}`);
+  } finally {
+    await mongoose.disconnect();
   }
 };
+// TODO - check how to use from terminal
 /**
  * create test data jsons files inside ./data folder - fetching from dev db - and filter by dataIndex
  */
@@ -96,6 +99,13 @@ const dataGen = async () => {
     await mongoose.disconnect();
   }
 };
+
+/**
+ * return object with keys of all files names in "path" and the value of each file is the export
+ * @param {string} path folder path
+ * @param {string} fileType file type eg. ".json"
+ * @returns object with keys of all file names and the values file export
+ */
 const loadFiles = async (path, fileType) => {
   const fileNames = await fs.readdir(path);
   const loadedObj = {};
@@ -105,14 +115,12 @@ const loadFiles = async (path, fileType) => {
   return loadedObj;
 };
 
-finish()
+reset()
   .then((res) => {
-    start()
-      .then((res) => {
-        console.log("finish");
-      })
-      .catch((err) => {});
+    console.log("finish");
   })
   .catch((err) => {
     console.log(err);
   });
+
+module.exports = reset;
