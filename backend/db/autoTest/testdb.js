@@ -21,16 +21,13 @@ const start = async () => {
   } catch (err) {
     console.log("Error while inserting auto test data: ", err);
     throw err;
-  } finally {
   }
-  return "auto test db filled with data";
 };
 /**
  * delete all data from db
  */
 const finish = async () => {
   process.env.NODE_ENV = "autotest";
-
   const modelsPath = "../../models";
   const models = await loadFiles(modelsPath, ".js");
   const collectionList = Object.keys(models);
@@ -43,9 +40,7 @@ const finish = async () => {
   } catch (err) {
     console.log("Error while clear auto test data: ", err);
     throw err;
-  } finally {
   }
-  return "auto test db cleared";
 };
 /**
  * reset db - clear all data and insert test data jsons
@@ -68,9 +63,8 @@ const reset = async () => {
  * create test data jsons files inside ./data folder - fetching from dev db - and filter by dataIndex
  */
 const dataGen = async () => {
-  process.env.NODE_ENV = "development";
+  process.env.NODE_ENV = "development"; // fetch data from this DB
   const mongoose = require("../dbcon");
-
   const modelsPath = "../../models";
   const fileExt = ".json";
   const testDataPath = "./data";
