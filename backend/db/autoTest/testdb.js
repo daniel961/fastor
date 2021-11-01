@@ -1,5 +1,6 @@
 process.env.NODE_ENV = "autotest";
 const fs = require("fs").promises;
+const path = require("path");
 const dataIndex = require("./dataIndex");
 
 /**
@@ -7,8 +8,8 @@ const dataIndex = require("./dataIndex");
  */
 const start = async () => {
   process.env.NODE_ENV = "autotest";
-  const modelsPath = "../../models";
-  const testDataPath = "./data";
+  const modelsPath = path.join(__dirname, "..", "..", "models");
+  const testDataPath = path.join(__dirname, "data");
   const models = await loadFiles(modelsPath, ".js");
   const testData = await loadFiles(testDataPath, ".json");
   const testDbCollections = Object.keys(testData);
@@ -28,7 +29,7 @@ const start = async () => {
  */
 const finish = async () => {
   process.env.NODE_ENV = "autotest";
-  const modelsPath = "../../models";
+  const modelsPath = path.join(__dirname, "..", "..", "models");
   const models = await loadFiles(modelsPath, ".js");
   const collectionList = Object.keys(models);
   try {
@@ -65,9 +66,9 @@ const reset = async () => {
 const dataGen = async () => {
   process.env.NODE_ENV = "development"; // fetch data from this DB
   const mongoose = require("../dbcon");
-  const modelsPath = "../../models";
+  const modelsPath = path.join(__dirname, "..", "..", "models");
   const fileExt = ".json";
-  const testDataPath = "./data";
+  const testDataPath = path.join(__dirname, "data");
   const models = await loadFiles(modelsPath, ".js");
   const dataIndexCollectionNames = Object.keys(dataIndex);
   try {
@@ -108,13 +109,5 @@ const loadFiles = async (path, fileType) => {
   });
   return loadedObj;
 };
-
-reset()
-  .then((res) => {
-    console.log("finish");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
 
 module.exports = reset;
