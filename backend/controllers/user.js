@@ -32,7 +32,8 @@ const loginUser = async (req, res) => {
       throw new Error();
     }
   } catch (err) {
-    res.status(400).send("אימייל או  סיסמה לא תקינים");
+    console.log(err);
+    res.status(400).send("error");
   }
 };
 

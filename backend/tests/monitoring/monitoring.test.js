@@ -1,6 +1,11 @@
-process.env.NODE_ENV = "test";
+process.env.NODE_ENV = "autotest";
+const mongoose = require("mongoose");
 const request = require("supertest");
 const app = require("../../app");
+
+afterAll(async () => {
+  mongoose.connection.close();
+});
 
 describe("ping test", function () {
   it("responds with text ping", async function () {

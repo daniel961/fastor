@@ -23,6 +23,7 @@ const serviceRouter = require("./routes/service");
 const otpRouter = require("./routes/otp");
 const appointmentRouter = require("./routes/appointment");
 const monitoring = require("./routes/monitoring");
+require("./db/dbcon");
 
 const app = express();
 

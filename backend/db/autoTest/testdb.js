@@ -56,7 +56,7 @@ const reset = async () => {
   } catch (err) {
     console.log(`Error: while reset data ${err}`);
   } finally {
-    await mongoose.disconnect();
+    // await mongoose.disconnect();
   }
 };
 // TODO - check how to use from terminal
@@ -109,5 +109,4 @@ const loadFiles = async (path, fileType) => {
   });
   return loadedObj;
 };
-
-module.exports = reset;
+module.exports = { finish, start, reset };
